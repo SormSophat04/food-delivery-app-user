@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/features/presentation/auth/view/login_view.dart';
-import 'package:food_delivery_app/features/presentation/auth/view/signup_view.dart';
+import 'package:food_delivery_app/features/auth/view/login_view.dart';
+import 'package:food_delivery_app/features/auth/view/signup_view.dart';
 
 class ToggleScreen extends StatefulWidget {
   const ToggleScreen({super.key});

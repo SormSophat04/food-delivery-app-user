@@ -10,4 +10,5 @@ class AppColors {
   static const Color bgBlack = Color(0xff121223);
 
   static const Color textfieldColor = Color(0xffF0F5FA);
+  static const Color greyBtn = Color(0xffECF0F4);
 }

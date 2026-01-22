@@ -9,7 +9,7 @@ class CustomHeader extends StatelessWidget {
     return Container(
       height: 50,
       width: double.infinity,
-      margin: EdgeInsets.only(left: 25, right: 25, top: 50),
+      margin: EdgeInsets.only(left: 15, right: 15, top: 50),
       child: Row(
         children: [
           _circleAvatar(),

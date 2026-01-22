@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:food_delivery_app/routes/app_route.dart';
-import 'package:food_delivery_app/routes/app_screen.dart';
+import 'package:food_delivery_app/core/routes/app_route.dart';
+import 'package:food_delivery_app/core/routes/app_screen.dart';
 import 'package:get/get.dart';
 
 void main() {

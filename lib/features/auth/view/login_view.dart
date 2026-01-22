@@ -73,7 +73,7 @@ class LoginView extends StatelessWidget {
                     CustomButton(
                       btntext: 'LOG IN',
                       btnicon: '',
-                      onTap: () => Get.toNamed('/home'),
+                      onTap: () => Get.toNamed('/navbar'),
                     ),
                     SizedBox(height: 24),
                     _singUp(),
