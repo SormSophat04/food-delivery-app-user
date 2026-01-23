@@ -9,4 +9,7 @@ class AppRoute {
   static const String search = '/search';
   static const String cart = '/cart';
   static const String bottomnavbar = '/navbar';
+  static const String authWapper = '/authWapper';
+  static const String profile = '/profile';
+  static const String toggleAuth = '/toggleAuth';
 }

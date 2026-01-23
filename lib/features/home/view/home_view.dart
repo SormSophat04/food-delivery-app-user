@@ -1,23 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/core/constants/app_colors.dart';
-import 'package:food_delivery_app/features/home/widgets/custom_category_card.dart';
+import 'package:food_delivery_app/core/widgets/custom_category_card.dart';
+import 'package:food_delivery_app/features/auth/controller/auth_controller.dart';
 import 'package:food_delivery_app/features/home/widgets/custom_header.dart';
 import 'package:food_delivery_app/features/home/widgets/custom_restaurant_card.dart';
 import 'package:food_delivery_app/features/home/widgets/custom_search.dart';
 import 'package:get/get.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends GetView<AuthController> {
   const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.whiteColor,
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
           children: [
-            CustomHeader(),
+            CustomHeader(
+              onTap: () {
+                controller.logout();
+              },
+            ),
             SizedBox(height: 20),
             _welcomeText(),
             SizedBox(height: 20),
@@ -30,7 +35,7 @@ class HomeView extends StatelessWidget {
             _openRestaurants(),
             SizedBox(height: 20),
             CustomRestaurantCard(),
-            SizedBox(height: 320),
+            SizedBox(height: 120),
           ],
         ),
       ),

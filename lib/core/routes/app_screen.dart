@@ -1,3 +1,4 @@
+import 'package:food_delivery_app/features/auth/view/auth_wrapper.dart';
 import 'package:food_delivery_app/features/auth/view/forgot_password_view.dart';
 import 'package:food_delivery_app/features/auth/view/toggle_screen.dart';
 import 'package:food_delivery_app/features/auth/view/verifycode_view.dart';
@@ -24,5 +25,10 @@ class AppScreen {
     GetPage(name: AppRoute.search, page: () => const SearchView()),
     GetPage(name: AppRoute.cart, page: () => const CartView()),
     GetPage(name: AppRoute.bottomnavbar, page: () => const CustomNavbar()),
+    GetPage(
+      name: AppRoute.authWapper,
+      page: () => const AuthWrapper(),
+    ),
+    GetPage(name: AppRoute.profile, page: () => const HomeView()),
   ];
 }

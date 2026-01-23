@@ -16,17 +16,17 @@ class CustomCategoryCard extends StatelessWidget {
         itemCount: 10,
         itemBuilder: (context, index) {
           return Container(
-            height: 170,
+            height: 175,
             width: 148,
             margin: EdgeInsets.symmetric(horizontal: 5),
             decoration: BoxDecoration(
-              // color: Colors.grey,
+              // color: Colors.blue,
               borderRadius: BorderRadius.circular(24),
             ),
             child: Stack(
               children: [
                 Positioned(
-                  bottom: 0,
+                  bottom: 12,
                   left: 0,
                   right: 0,
                   child: Container(
@@ -35,14 +35,21 @@ class CustomCategoryCard extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(24),
-                      color: Colors.white,
+                      color: AppColors.whiteColor,
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 10,
+                          color: AppColors.greyColor.withOpacity(0.2),
+                          offset: Offset(0, 4),
+                        )
+                      ]
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _catName(),
-                        SizedBox(height: 6),
+                        SizedBox(height: 4),
                         _startingPrice(),
                       ],
                     ),
@@ -53,7 +60,7 @@ class CustomCategoryCard extends StatelessWidget {
                   left: 12,
                   right: 12,
                   child: Container(
-                    height: 104,
+                    height: 94,
                     decoration: BoxDecoration(
                       color: Colors.grey,
                       borderRadius: BorderRadius.circular(15),

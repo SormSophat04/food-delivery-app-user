@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery_app/core/constants/app_colors.dart';
 
 class CustomHeader extends StatelessWidget {
-  const CustomHeader({super.key});
+  final Function()? onTap;
+  const CustomHeader({super.key, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +24,13 @@ class CustomHeader extends StatelessWidget {
   }
 
   Widget _circleAvatar() {
-    return CircleAvatar(
-      radius: 25,
-      backgroundColor: Colors.grey.shade200,
-      child: Icon(Icons.person, color: Colors.grey),
+    return GestureDetector(
+      onTap: onTap,
+      child: CircleAvatar(
+        radius: 25,
+        backgroundColor: Colors.grey.shade200,
+        child: Icon(Icons.person, color: Colors.grey),
+      ),
     );
   }
 

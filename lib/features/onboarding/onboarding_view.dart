@@ -79,12 +79,12 @@ class OnboardingView extends StatelessWidget {
         CustomButton(
           btntext: 'NEXT',
           btnicon: '',
-          onTap: () => Get.toNamed('/login'),
+          onTap: () => Get.toNamed('/authWapper'),
         ),
         SizedBox(height: 6),
         TextButton(
           onPressed: () {
-            Get.toNamed('/login');
+            Get.toNamed('/authWapper');
           },
           child: Text(
             "Skip",

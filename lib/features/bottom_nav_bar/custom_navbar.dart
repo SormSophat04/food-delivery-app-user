@@ -47,83 +47,50 @@ class _CustomNavbarState extends State<CustomNavbar> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      _onItemTapped(0);
-                    },
-                    child: SizedBox(
-                      height: 30,
-                      width: 30,
-                      child: Image.asset(
-                        _selectedIndex == 0
-                            ? 'assets/icons/home (5).png'
-                            : 'assets/icons/home (4).png',
-                        fit: BoxFit.cover,
-                        color: _selectedIndex == 0
-                            ? AppColors.primaryColor
-                            : AppColors.greyColor,
-                      ),
-                    ),
+                  _buildNavButton(
+                    0,
+                    'assets/icons/home (4).png',
+                    'assets/icons/home (5).png',
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      _onItemTapped(1);
-                    },
-                    child: SizedBox(
-                      height: 27,
-                      width: 27,
-                      child: Image.asset(
-                        _selectedIndex == 1
-                            ? 'assets/icons/dashboards (1).png'
-                            : 'assets/icons/dashboards.png',
-                        fit: BoxFit.cover,
-                        color: _selectedIndex == 1
-                            ? AppColors.primaryColor
-                            : AppColors.greyColor,
-                      ),
-                    ),
+                  _buildNavButton(
+                    1,
+                    'assets/icons/dashboards.png',
+                    'assets/icons/dashboards (1).png',
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      _onItemTapped(2);
-                    },
-                    child: SizedBox(
-                      height: 30,
-                      width: 30,
-                      child: Image.asset(
-                        _selectedIndex == 2
-                            ? 'assets/icons/shopping-bag (2).png'
-                            : 'assets/icons/shopping-bag (1).png',
-                        fit: BoxFit.cover,
-                        color: _selectedIndex == 2
-                            ? AppColors.primaryColor
-                            : AppColors.greyColor,
-                      ),
-                    ),
+                  _buildNavButton(
+                    2,
+                    'assets/icons/shopping-bag (1).png',
+                    'assets/icons/shopping-bag (2).png',
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      _onItemTapped(3);
-                    },
-                    child: SizedBox(
-                      height: 27,
-                      width: 27,
-                      child: Image.asset(
-                        _selectedIndex == 3
-                            ? 'assets/icons/user.png'
-                            : 'assets/icons/user (1).png',
-                        fit: BoxFit.cover,
-                        color: _selectedIndex == 3
-                            ? AppColors.primaryColor
-                            : AppColors.greyColor,
-                      ),
-                    ),
+                  _buildNavButton(
+                    3,
+                    'assets/icons/user (1).png',
+                    'assets/icons/user.png',
                   ),
                 ],
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildNavButton(int index, String icon, String iconfill) {
+    return GestureDetector(
+      onTap: () {
+        _onItemTapped(index);
+      },
+      child: SizedBox(
+        height: 27,
+        width: 27,
+        child: Image.asset(
+          _selectedIndex == index ? iconfill : icon,
+          fit: BoxFit.cover,
+          color: _selectedIndex == index
+              ? AppColors.primaryColor
+              : AppColors.greyColor,
+        ),
       ),
     );
   }

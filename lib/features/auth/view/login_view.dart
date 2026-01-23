@@ -1,12 +1,25 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/core/constants/app_colors.dart';
 import 'package:food_delivery_app/core/widgets/custom_button.dart';
 import 'package:food_delivery_app/core/widgets/custom_text_field.dart';
+import 'package:food_delivery_app/features/auth/controller/auth_controller.dart';
 import 'package:get/get.dart';
 
-class LoginView extends StatelessWidget {
+class LoginView extends GetView<AuthController> {
   final Function()? onTap;
-  const LoginView({super.key, this.onTap});
+  LoginView({super.key, this.onTap});
+
+  final TextEditingController _emailController = TextEditingController();
+
+  final TextEditingController _passwordController = TextEditingController();
+
+  Future signIn() async {
+    await controller.login(
+      _emailController.text.trim(),
+      _passwordController.text.trim(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +27,7 @@ class LoginView extends StatelessWidget {
       backgroundColor: AppColors.blackColor,
       body: Column(
         children: [
-          Container(
+          SizedBox(
             height: 240,
             width: double.infinity,
             child: Stack(
@@ -55,12 +68,14 @@ class LoginView extends StatelessWidget {
                   children: [
                     _email(),
                     CustomTextField(
+                      controller: _emailController,
                       obscureText: false,
                       hintText: 'example@gmail.com',
                     ),
                     SizedBox(height: 20),
                     _password(),
                     CustomTextField(
+                      controller: _passwordController,
                       obscureText: true,
                       hintText: '# # # # # # # # #',
                     ),
@@ -73,7 +88,7 @@ class LoginView extends StatelessWidget {
                     CustomButton(
                       btntext: 'LOG IN',
                       btnicon: '',
-                      onTap: () => Get.toNamed('/navbar'),
+                      onTap: () => signIn(),
                     ),
                     SizedBox(height: 24),
                     _singUp(),

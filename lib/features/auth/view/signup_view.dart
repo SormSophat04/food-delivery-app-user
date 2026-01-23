@@ -2,11 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery_app/core/constants/app_colors.dart';
 import 'package:food_delivery_app/core/widgets/custom_button.dart';
 import 'package:food_delivery_app/core/widgets/custom_text_field.dart';
+import 'package:food_delivery_app/features/auth/controller/auth_controller.dart';
 import 'package:get/get.dart';
 
-class SignupView extends StatelessWidget {
+class SignupView extends GetView<AuthController> {
   final Function()? onTap;
-  const SignupView({super.key, this.onTap});
+  SignupView({super.key, this.onTap});
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +21,7 @@ class SignupView extends StatelessWidget {
       backgroundColor: AppColors.blackColor,
       body: Column(
         children: [
-          Container(
+          SizedBox(
             height: 240,
             width: double.infinity,
             child: Stack(
@@ -54,22 +61,28 @@ class SignupView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _name(),
-                    CustomTextField(obscureText: false, hintText: 'ronaldo'),
+                    CustomTextField(
+                        controller: _nameController,
+                        obscureText: false,
+                        hintText: 'ronaldo'),
                     SizedBox(height: 20),
                     _email(),
                     CustomTextField(
+                      controller: _emailController,
                       obscureText: false,
                       hintText: 'example@gmail.com',
                     ),
                     SizedBox(height: 20),
                     _password(),
                     CustomTextField(
+                      controller: _passwordController,
                       obscureText: true,
                       hintText: '# # # # # # # # #',
                     ),
                     SizedBox(height: 20),
                     _confirmPassword(),
                     CustomTextField(
+                      controller: _confirmPasswordController,
                       obscureText: true,
                       hintText: '# # # # # # # # #',
                     ),
@@ -77,7 +90,17 @@ class SignupView extends StatelessWidget {
                     CustomButton(
                       btntext: 'SIGN UP',
                       btnicon: '',
-                      onTap: () => Get.toNamed('/verifycode'),
+                      onTap: () {
+                        
+                        if(_confirmPasswordController.text != _passwordController.text){
+                          Get.snackbar('Error', 'Passwords do not match');
+                          return;
+                        }
+                        controller.register(
+                          _emailController.text,
+                          _passwordController.text,
+                        );
+                      },
                     ),
                     SizedBox(height: 10),
                     _login(),
