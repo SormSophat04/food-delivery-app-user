@@ -1,10 +1,14 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:food_delivery_app/routes/app_route.dart';
-import 'package:food_delivery_app/routes/app_screen.dart';
+import 'package:food_delivery_app/core/bindings/initial_binding.dart';
+import 'package:food_delivery_app/core/routes/app_route.dart';
+import 'package:food_delivery_app/core/routes/app_screen.dart';
 import 'package:get/get.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -22,6 +26,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           initialRoute: AppRoute.splash,
           getPages: AppScreen.screens,
+          initialBinding: InitialBinding(),
         );
       },
     );
