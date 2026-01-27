@@ -1,41 +1,65 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/core/constants/app_colors.dart';
-import 'package:food_delivery_app/core/widgets/custom_category_card.dart';
 import 'package:food_delivery_app/features/auth/controller/auth_controller.dart';
+import 'package:food_delivery_app/features/home/controller/category_controller.dart';
+import 'package:food_delivery_app/features/home/controller/restaurant_controller.dart';
+import 'package:food_delivery_app/features/home/widgets/category_card.dart';
 import 'package:food_delivery_app/features/home/widgets/custom_header.dart';
 import 'package:food_delivery_app/features/home/widgets/custom_restaurant_card.dart';
 import 'package:food_delivery_app/features/home/widgets/custom_search.dart';
 import 'package:get/get.dart';
 
-class HomeView extends GetView<AuthController> {
-  const HomeView({super.key});
+class HomeView extends GetView<RestaurantController> {
+  HomeView({super.key});
+  CategoryController categoryController = Get.find<CategoryController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
             CustomHeader(
               onTap: () {
-                controller.logout();
+                Get.find<AuthController>().logout();
               },
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             _welcomeText(),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             CustomSearch(onTap: () => Get.toNamed('/search')),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             _categories(),
-            SizedBox(height: 20),
-            CustomCategoryCard(),
-            SizedBox(height: 30),
+            const SizedBox(height: 20),
+            Obx(() {
+              if (categoryController.isLoading.value) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (categoryController.categoryList.isEmpty) {
+                return const Center(child: Text('No categories found.'));
+              }
+              return SizedBox(
+                height: 170,
+                width: double.infinity,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  shrinkWrap: true,
+                  itemCount: categoryController.categoryList.length,
+                  itemBuilder: (context, index) {
+                    final category = categoryController.categoryList[index];
+                    return CategoryCard(category: category);
+                  },
+                ),
+              );
+            }),
+            const SizedBox(height: 30),
             _openRestaurants(),
-            SizedBox(height: 20),
-            CustomRestaurantCard(),
-            SizedBox(height: 120),
+            const SizedBox(height: 20),
+            const CustomRestaurantCard(),
+            const SizedBox(height: 120),
           ],
         ),
       ),
@@ -49,7 +73,7 @@ class HomeView extends GetView<AuthController> {
         alignment: Alignment.centerLeft,
         child: Row(
           children: [
-            Text(
+            const Text(
               "Welcome back, ",
               style: TextStyle(
                 fontSize: 16,
@@ -58,7 +82,7 @@ class HomeView extends GetView<AuthController> {
                 fontFamily: 'Sen',
               ),
             ),
-            Text(
+            const Text(
               "Ronaldo!",
               style: TextStyle(
                 fontSize: 16,
@@ -79,7 +103,7 @@ class HomeView extends GetView<AuthController> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
+          const Text(
             "All Categories",
             style: TextStyle(
               fontSize: 18,
@@ -90,7 +114,7 @@ class HomeView extends GetView<AuthController> {
           ),
           Row(
             children: [
-              Text(
+              const Text(
                 "See all",
                 style: TextStyle(
                   fontSize: 16,
@@ -99,8 +123,8 @@ class HomeView extends GetView<AuthController> {
                   fontFamily: 'Sen',
                 ),
               ),
-              SizedBox(width: 5),
-              Icon(
+              const SizedBox(width: 5),
+              const Icon(
                 Icons.arrow_forward_ios,
                 size: 16,
                 color: AppColors.blackColor,
@@ -118,7 +142,7 @@ class HomeView extends GetView<AuthController> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
+          const Text(
             "Open Restaurants",
             style: TextStyle(
               fontSize: 18,
@@ -129,7 +153,7 @@ class HomeView extends GetView<AuthController> {
           ),
           Row(
             children: [
-              Text(
+              const Text(
                 "See all",
                 style: TextStyle(
                   fontSize: 16,
@@ -138,8 +162,8 @@ class HomeView extends GetView<AuthController> {
                   fontFamily: 'Sen',
                 ),
               ),
-              SizedBox(width: 5),
-              Icon(
+              const SizedBox(width: 5),
+              const Icon(
                 Icons.arrow_forward_ios,
                 size: 16,
                 color: AppColors.blackColor,

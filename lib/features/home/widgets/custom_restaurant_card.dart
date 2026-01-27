@@ -1,75 +1,101 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/core/constants/app_colors.dart';
+import 'package:food_delivery_app/core/widgets/custom_about_restaurant.dart';
+import 'package:food_delivery_app/features/home/controller/restaurant_controller.dart';
+import 'package:get/get.dart';
 
-class CustomRestaurantCard extends StatelessWidget {
+class CustomRestaurantCard extends GetView<RestaurantController> {
   const CustomRestaurantCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 230,
-      width: double.infinity,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        shrinkWrap: true,
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return Container(
-            height: 230,
-            width: 300,
-            margin: EdgeInsets.symmetric(horizontal: 5),
-            // color: Colors.amber,
-            child: Stack(
-              children: [
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    height: 205,
-                    width: 250,
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(24),
-                      color: Colors.white,
+    return Obx(() {
+      if (controller.isLoading.value) {
+        return const Center(child: CircularProgressIndicator());
+      }
+      if (controller.restaurantList.isEmpty) {
+        return const Center(child: Text('No restaurants found.'));
+      }
+      return SizedBox(
+        height: 250,
+        width: double.infinity,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          shrinkWrap: true,
+          itemCount: controller.restaurantList.length,
+          itemBuilder: (context, index) {
+            final restaurant = controller.restaurantList[index];
+            return GestureDetector(
+              onTap: () => Get.toNamed('/restaurant', arguments: restaurant),
+              child: Container(
+                height: 250,
+                width: 300,
+                margin: const EdgeInsets.symmetric(horizontal: 5),
+                // color: Colors.amber,
+                child: Stack(
+                  children: [
+                    Positioned(
+                      bottom: 20,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        height: 205,
+                        width: 250,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 12),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(24),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 10,
+                                color: AppColors.greyColor.withOpacity(0.2),
+                                offset: const Offset(0, 8),
+                              )
+                            ]),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _restaurantName(name: restaurant.name),
+                            const SizedBox(height: 5),
+                            _items(),
+                            const SizedBox(height: 5),
+                            const CustomAboutRestaurant(),
+                          ],
+                        ),
+                      ),
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _restaurantName(),
-                        SizedBox(height: 5),
-                        _items(),
-                        SizedBox(height: 5),
-                        _aboutRestaurant(),
-                      ],
+                    Positioned(
+                      top: 0,
+                      left: 12,
+                      right: 12,
+                      child: Container(
+                        height: 130,
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(15),
+                          image: DecorationImage(
+                            image: NetworkImage(restaurant.image),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-                Positioned(
-                  top: 0,
-                  left: 12,
-                  right: 12,
-                  child: Container(
-                    height: 130,
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
-    );
+              ),
+            );
+          },
+        ),
+      );
+    });
   }
 
-  Widget _restaurantName() {
+  Widget _restaurantName({required String name}) {
     return Text(
-      "Restaurant Name",
+      name,
       style: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w500,
@@ -88,67 +114,6 @@ class CustomRestaurantCard extends StatelessWidget {
         color: AppColors.greyColor,
         fontFamily: 'Sen',
       ),
-    );
-  }
-
-  Widget _aboutRestaurant() {
-    return Row(
-      children: [
-        Image.asset(
-          'assets/icons/favorites.png',
-          color: AppColors.primaryColor,
-          height: 20,
-          width: 20,
-        ),
-        SizedBox(width: 5),
-        Text(
-          "4.5",
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-            color: AppColors.greyColor,
-            fontFamily: 'Sen',
-          ),
-        ),
-        SizedBox(width: 4),
-        Text("•"),
-        SizedBox(width: 4),
-        Image.asset(
-          'assets/icons/fast.png',
-          color: AppColors.primaryColor,
-          height: 25,
-          width: 25,
-        ),
-        SizedBox(width: 5),
-        Text(
-          "Free",
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-            color: AppColors.greyColor,
-            fontFamily: 'Sen',
-          ),
-        ),
-        SizedBox(width: 4),
-        Text("•"),
-        SizedBox(width: 4),
-        Image.asset(
-          'assets/icons/clock.png',
-          color: AppColors.primaryColor,
-          height: 18,
-          width: 18,
-        ),
-        SizedBox(width: 5),
-        Text(
-          "30-40 min",
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-            color: AppColors.greyColor,
-            fontFamily: 'Sen',
-          ),
-        ),
-      ],
     );
   }
 }

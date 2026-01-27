@@ -11,5 +11,6 @@ class AppRoute {
   static const String bottomnavbar = '/navbar';
   static const String authWapper = '/authWapper';
   static const String profile = '/profile';
-  static const String toggleAuth = '/toggleAuth';
+  static const String restaurant = '/restaurant';
+  static const String foodDetail = '/foodDetail';
 }

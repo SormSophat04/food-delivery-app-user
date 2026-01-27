@@ -6,7 +6,7 @@ class CustomCategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 170,
       width: double.infinity,
       child: ListView.builder(
