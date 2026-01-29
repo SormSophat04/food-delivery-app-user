@@ -1,5 +1,5 @@
 import 'package:food_delivery_app/features/home/model/category_model.dart';
-import 'package:food_delivery_app/features/rastaurant/provider/restaurant_provider.dart';
+import 'package:food_delivery_app/features/restaurant/provider/restaurant_provider.dart';
 import 'package:get/get.dart';
 
 import '../model/food_model.dart';
@@ -16,33 +16,41 @@ class FoodController extends GetxController {
   var categoryList = <CategoryModel>[].obs;
   var selectedCategoryIndex = 0.obs;
 
+  final restaurant = Get.arguments;
+
   List<FoodModel> get filteredFoodList {
-    if (selectedCategoryIndex.value == 0) {
-      return foodList;
-    }
-    return foodList
-        .where((food) =>
-            food.categoryId == categoryList[selectedCategoryIndex.value].id)
-        .toList();
+    return foodList;
   }
 
   void selectCategory(int index) {
     selectedCategoryIndex.value = index;
+    String? categoryId;
+    if (index != 0) {
+      categoryId = categoryList[index].id as String?;
+    }
+    fetchFoods(restaurantId: restaurant.id, categoryId: categoryId);
   }
 
   @override
   void onInit() {
     super.onInit();
-    fetchFoods();
+    if (restaurant != null) {
+      fetchFoods(restaurantId: restaurant.id);
+    } else {
+      fetchFoods();
+    }
+    print(errorMessage);
   }
 
-  void fetchFoods() async {
+  void fetchFoods({String? restaurantId, String? categoryId}) async {
     try {
       isLoading(true);
-      final foods = await _restaurantProvider.fetchFoods();
+      final foods = await _restaurantProvider.fetchFoods(
+          restaurantId: restaurantId, categoryId: categoryId);
       foodList.value = foods;
     } catch (e) {
       errorMessage.value = e.toString();
+      print(errorMessage.value = e.toString());
     } finally {
       isLoading(false);
     }

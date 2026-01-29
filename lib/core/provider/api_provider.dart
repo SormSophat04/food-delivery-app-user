@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:food_delivery_app/core/service/api_endpoint.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ApiProvider {
   Dio dio = createDio();
@@ -16,7 +17,20 @@ class ApiProvider {
           'Accept': 'application/json'
         },
       ),
-    );
+    )..interceptors.add(
+        InterceptorsWrapper(
+          onRequest: (options, handler) {
+            final token =
+                Supabase.instance.client.auth.currentSession?.accessToken;
+
+            if (token != null) {
+              options.headers['Authorization'] = 'Bearer $token';
+            }
+
+            return handler.next(options);
+          },
+        ),
+      );
     return dio;
   }
 

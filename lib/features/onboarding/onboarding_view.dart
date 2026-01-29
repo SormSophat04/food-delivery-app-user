@@ -96,7 +96,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                 btntext: 'Done',
                 btnicon: '',
                 onTap: () {
-                  Get.offNamed('/authWapper');
+                  Get.offNamed('/navbar');
                 },
               )
             : CustomButton(

@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 
 class CustomAboutRestaurant extends StatelessWidget {
-  const CustomAboutRestaurant({super.key});
+  final String rate;
+  final bool isFree;
+  const CustomAboutRestaurant(
+      {super.key, required this.rate, required this.isFree});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,7 @@ class CustomAboutRestaurant extends StatelessWidget {
         ),
         SizedBox(width: 5),
         Text(
-          "4.5",
+          rate,
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w400,
@@ -36,7 +39,7 @@ class CustomAboutRestaurant extends StatelessWidget {
         ),
         SizedBox(width: 5),
         Text(
-          "Free",
+          isFree ? "Free" : "Pair",
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w400,

@@ -62,7 +62,11 @@ class CustomRestaurantCard extends GetView<RestaurantController> {
                             const SizedBox(height: 5),
                             _items(),
                             const SizedBox(height: 5),
-                            const CustomAboutRestaurant(),
+                            CustomAboutRestaurant(
+                              rate:
+                                  '${controller.restaurantList[index].rating}',
+                              isFree: controller.restaurantList[index].isOpen,
+                            ),
                           ],
                         ),
                       ),
@@ -77,7 +81,8 @@ class CustomRestaurantCard extends GetView<RestaurantController> {
                           color: Colors.grey,
                           borderRadius: BorderRadius.circular(15),
                           image: DecorationImage(
-                            image: NetworkImage(restaurant.image),
+                            image:
+                                AssetImage('assets/images/category_image.png'),
                             fit: BoxFit.cover,
                           ),
                         ),

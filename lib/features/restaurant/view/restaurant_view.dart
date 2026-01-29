@@ -3,8 +3,8 @@ import 'package:food_delivery_app/core/constants/app_colors.dart';
 import 'package:food_delivery_app/core/widgets/custom_about_restaurant.dart';
 import 'package:food_delivery_app/core/widgets/custom_topbar.dart';
 import 'package:food_delivery_app/core/widgets/custom_category_bar.dart';
-import 'package:food_delivery_app/features/rastaurant/controller/food_controller.dart';
-import 'package:food_delivery_app/features/rastaurant/widgets/custom_cate_card_selected.dart';
+import 'package:food_delivery_app/features/restaurant/controller/food_controller.dart';
+import 'package:food_delivery_app/features/restaurant/widgets/custom_cate_card_selected.dart';
 import 'package:get/get.dart';
 
 class RestaurantView extends GetView<FoodController> {
@@ -38,13 +38,16 @@ class RestaurantView extends GetView<FoodController> {
                             description: restaurant.description,
                           ),
                           SizedBox(height: 12),
-                          CustomAboutRestaurant()
+                          CustomAboutRestaurant(
+                            rate: '${restaurant.rating}',
+                            isFree: restaurant.isOpen,
+                          ),
                         ],
                       ),
                     ),
                     SizedBox(height: 24),
 
-                    // Rastaurant Category
+                    // Restaurant Category
                     Obx(
                       () => CustomCategoryBar(
                         selectedIndex: controller.selectedCategoryIndex.value,
@@ -61,12 +64,11 @@ class RestaurantView extends GetView<FoodController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          // _buildCateNameSelected(),
+                          _buildCateNameSelected(),
                           SizedBox(
                             height: 20,
                           ),
-                          // Obx(() => _buildGridCategoryCard()),
-                          _buildGridCategoryCard(),
+                          _buildGridFood(),
                         ],
                       ),
                     )
@@ -78,7 +80,7 @@ class RestaurantView extends GetView<FoodController> {
             left: 0,
             right: 0,
             child: CustomTopbar(
-              title: 'Rastaurant View',
+              title: 'Restaurant View',
               actionIcon1: 'assets/icons/More.png',
               bgColor: AppColors.greyBtn,
               cartNumber: '',
@@ -90,9 +92,38 @@ class RestaurantView extends GetView<FoodController> {
     );
   }
 
-  Widget _buildGridCategoryCard() {
+  Widget _buildCateNameSelected() {
     return Obx(
-      () => GridView.builder(
+      () => Text(
+        controller.selectedCategoryIndex.value == 0
+            ? 'All'
+            : controller
+                .categoryList[controller.selectedCategoryIndex.value].name,
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w400,
+          color: AppColors.blackColor,
+          fontFamily: 'Sen',
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGridFood() {
+    return Obx(() {
+      if (controller.isLoading.value) {
+        return Center(child: CircularProgressIndicator());
+      }
+
+      if (controller.errorMessage.value.isNotEmpty) {
+        return Center(child: Text(controller.errorMessage.value));
+      }
+
+      if (controller.filteredFoodList.isEmpty) {
+        return Center(child: Text('No foods found'));
+      }
+
+      return GridView.builder(
         itemCount: controller.filteredFoodList.length,
         shrinkWrap: true,
         padding: EdgeInsets.zero,
@@ -103,29 +134,15 @@ class RestaurantView extends GetView<FoodController> {
             mainAxisSpacing: 10,
             childAspectRatio: 0.83),
         itemBuilder: (context, index) => GestureDetector(
-          onTap: () => Get.toNamed('/foodDetail'),
+          onTap: () => Get.toNamed('/foodDetail', arguments: restaurant),
           child: CustomCateCardSelected(
             name: controller.filteredFoodList[index].name,
-            foodimage: controller.filteredFoodList[index].image,
+            foodimage: 'assets/images/category_image.png',
           ),
         ),
-      ),
-    );
+      );
+    });
   }
-
-  // Widget _buildCateNameSelected() {
-  //   return Obx(
-  //     () => Text(
-  //       controller.categoryList[controller.selectedCategoryIndex.value].name,
-  //       style: TextStyle(
-  //         fontSize: 20,
-  //         fontWeight: FontWeight.w400,
-  //         color: AppColors.blackColor,
-  //         fontFamily: 'Sen',
-  //       ),
-  //     ),
-  //   );
-  // }
 
   Widget _buildImageRestaurant() {
     return Container(
@@ -135,7 +152,7 @@ class RestaurantView extends GetView<FoodController> {
         borderRadius: BorderRadius.circular(24),
         color: Colors.grey,
         image: DecorationImage(
-          image: NetworkImage(restaurant.image),
+          image: AssetImage('assets/images/category_image.png'),
           fit: BoxFit.cover,
         ),
       ),

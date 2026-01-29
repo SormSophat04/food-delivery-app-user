@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/core/widgets/custom_button.dart';
 import 'package:food_delivery_app/core/widgets/custom_topbar.dart';
-import 'package:food_delivery_app/features/rastaurant/controller/food_controller.dart';
+import 'package:food_delivery_app/features/restaurant/controller/food_controller.dart';
 import 'package:get/get.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/widgets/custom_about_restaurant.dart';
 
 class FoodDetailView extends GetView<FoodController> {
-  const FoodDetailView({super.key});
+  final restaurant = Get.arguments;
+  FoodDetailView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,13 +32,17 @@ class FoodDetailView extends GetView<FoodController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: 120),
-                        _buildImageRestaurant(),
+                        _buildImageRestaurant(restaurant.image ??
+                            'assets/images/category_image.png'),
                         SizedBox(height: 24),
                         _buildNameRestaurant(),
                         SizedBox(height: 4),
                         _buildDescriptionRestaurant(),
                         SizedBox(height: 12),
-                        CustomAboutRestaurant()
+                        CustomAboutRestaurant(
+                          rate: '${restaurant.rating}',
+                          isFree: restaurant.isOpen,
+                        ),
                       ],
                     ),
                   ),
@@ -152,7 +157,7 @@ class FoodDetailView extends GetView<FoodController> {
     );
   }
 
-  Widget _buildImageRestaurant() {
+  Widget _buildImageRestaurant(String img) {
     return Obx(
       () => Container(
         height: 200,
@@ -160,6 +165,10 @@ class FoodDetailView extends GetView<FoodController> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(24),
           color: Colors.grey,
+          image: DecorationImage(
+            image: AssetImage(img),
+            fit: BoxFit.cover,
+          ),
         ),
         child: Stack(children: [
           Positioned(
@@ -168,20 +177,21 @@ class FoodDetailView extends GetView<FoodController> {
             child: GestureDetector(
               onTap: controller.toggleFavorite,
               child: CircleAvatar(
-                  radius: 20,
-                  backgroundColor: AppColors.greyColor,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: controller.isFavorite.value
-                        ? Image.asset(
-                            'assets/icons/favorite.png',
-                            color: Colors.white,
-                          )
-                        : Image.asset(
-                            'assets/icons/favorite (1).png',
-                            color: Colors.white,
-                          ),
-                  )),
+                radius: 20,
+                backgroundColor: AppColors.greyColor,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: controller.isFavorite.value
+                      ? Image.asset(
+                          'assets/icons/favorite.png',
+                          color: Colors.white,
+                        )
+                      : Image.asset(
+                          'assets/icons/favorite (1).png',
+                          color: Colors.white,
+                        ),
+                ),
+              ),
             ),
           )
         ]),
