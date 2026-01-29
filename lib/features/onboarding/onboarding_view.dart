@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/core/constants/app_colors.dart';
 import 'package:food_delivery_app/core/widgets/custom_button.dart';
+import 'package:food_delivery_app/features/onboarding/widgets/custom_onboarding.dart';
 import 'package:get/get.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-class OnboardingView extends StatelessWidget {
-  const OnboardingView({super.key});
+class OnboardingView extends StatefulWidget {
+  OnboardingView({super.key});
+
+  @override
+  State<OnboardingView> createState() => _OnboardingViewState();
+}
+
+class _OnboardingViewState extends State<OnboardingView> {
+  PageController _indicatorController = PageController();
+  bool isLastPage = false;
 
   @override
   Widget build(BuildContext context) {
@@ -12,21 +22,49 @@ class OnboardingView extends StatelessWidget {
       backgroundColor: AppColors.whiteColor,
       body: Column(
         children: [
-          Container(height: 100, width: double.infinity),
+          SizedBox(height: 100, width: double.infinity),
           Expanded(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                children: [
-                  _card(),
-                  SizedBox(height: 60),
-                  _title(),
-                  SizedBox(height: 16),
-                  _subtitle(),
-                ],
-              ),
+            child: PageView(
+              controller: _indicatorController,
+              onPageChanged: (value) {
+                setState(() {
+                  isLastPage = value == 3;
+                });
+              },
+              children: [
+                CustomOnboarding(
+                  title: 'All your food',
+                  subtitle:
+                      'Get all your loved foods in one once place,you just place the order we do the rest',
+                  jsonAnimation: 'assets/animated/Food.json',
+                ),
+                CustomOnboarding(
+                  title: 'All your favorites',
+                  subtitle:
+                      'Get all your loved foods in one once place,you just place the order we do the rest',
+                  jsonAnimation:
+                      'assets/animated/Delivery Service-Delivery man.json',
+                ),
+                CustomOnboarding(
+                  title: 'All your favorites',
+                  subtitle:
+                      'Get all your loved foods in one once place,you just place the order we do the rest',
+                  jsonAnimation: 'assets/animated/Food.json',
+                ),
+                CustomOnboarding(
+                  title: 'Order from choosen chef',
+                  subtitle:
+                      'Get all your loved foods in one once place,you just place the order we do the rest',
+                  jsonAnimation: 'assets/animated/Stylish Dog.json',
+                ),
+              ],
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: _buildIndicator(),
+          ),
+          SizedBox(height: 40),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: _button(),
@@ -37,54 +75,43 @@ class OnboardingView extends StatelessWidget {
     );
   }
 
-  Widget _card() {
-    return Container(
-      width: 240,
-      height: 290,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: AppColors.greyColor,
+  Widget _buildIndicator() {
+    return SmoothPageIndicator(
+      controller: _indicatorController,
+      count: 4,
+      effect: WormEffect(
+        dotColor: AppColors.primaryColor.withOpacity(0.3),
+        activeDotColor: AppColors.primaryColor,
+        dotHeight: 12,
+        dotWidth: 12,
       ),
-    );
-  }
-
-  Widget _title() {
-    return Text(
-      'All Your Favorite',
-      style: TextStyle(
-        fontSize: 24,
-        color: AppColors.blackColor,
-        fontWeight: FontWeight.w800,
-        fontFamily: 'Sen',
-      ),
-    );
-  }
-
-  Widget _subtitle() {
-    return Text(
-      'Get all your loved foods in one once place, you just place the order we do the rest',
-      style: TextStyle(
-        fontSize: 16,
-        color: AppColors.greyColor,
-        fontWeight: FontWeight.w400,
-        fontFamily: 'Sen',
-      ),
-      textAlign: TextAlign.center,
     );
   }
 
   Widget _button() {
     return Column(
       children: [
-        CustomButton(
-          btntext: 'NEXT',
-          btnicon: '',
-          onTap: () => Get.toNamed('/authWapper'),
-        ),
+        isLastPage
+            ? CustomButton(
+                btntext: 'Done',
+                btnicon: '',
+                onTap: () {
+                  Get.offNamed('/navbar');
+                },
+              )
+            : CustomButton(
+                btntext: 'Next',
+                btnicon: '',
+                onTap: () {
+                  _indicatorController.nextPage(
+                      duration: Duration(milliseconds: 500),
+                      curve: Curves.easeIn);
+                },
+              ),
         SizedBox(height: 6),
         TextButton(
           onPressed: () {
-            Get.toNamed('/authWapper');
+            _indicatorController.jumpToPage(3);
           },
           child: Text(
             "Skip",

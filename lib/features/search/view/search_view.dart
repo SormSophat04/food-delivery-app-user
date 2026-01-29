@@ -3,7 +3,7 @@ import 'package:food_delivery_app/core/constants/app_colors.dart';
 import 'package:food_delivery_app/core/widgets/custom_category_card.dart';
 import 'package:food_delivery_app/core/widgets/custom_topbar.dart';
 import 'package:food_delivery_app/features/search/widgets/custom_card_sugg.dart';
-import 'package:food_delivery_app/features/search/widgets/custom_recent_keyboard.dart';
+import 'package:food_delivery_app/core/widgets/custom_category_bar.dart';
 
 class SearchView extends StatelessWidget {
   const SearchView({super.key});
@@ -30,15 +30,16 @@ class SearchView extends StatelessWidget {
             SizedBox(height: 24),
             _buildRecenstText(),
             SizedBox(height: 12),
-            CustomRecentKeyboard(),
+            CustomCategoryBar(
+              selectedIndex: 2,
+              onCategorySelected: (int p1) {},
+            ),
             SizedBox(height: 24),
             _buildSuggestedText(),
             SizedBox(height: 12),
             CustomCardSugg(),
             SizedBox(height: 15),
             _buildPopularText(),
-
-            
             SizedBox(height: 12),
             CustomCategoryCard(),
             SizedBox(height: 30),
@@ -66,7 +67,6 @@ class SearchView extends StatelessWidget {
             color: Colors.grey,
           ),
           SizedBox(width: 10),
-
           Expanded(
             child: TextField(
               controller: null,
