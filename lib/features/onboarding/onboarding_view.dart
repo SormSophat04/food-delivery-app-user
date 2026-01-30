@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingView extends StatefulWidget {
-  OnboardingView({super.key});
+  const OnboardingView({super.key});
 
   @override
   State<OnboardingView> createState() => _OnboardingViewState();

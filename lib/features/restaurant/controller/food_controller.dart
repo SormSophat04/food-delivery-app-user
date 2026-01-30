@@ -1,4 +1,5 @@
 import 'package:food_delivery_app/features/home/model/category_model.dart';
+import 'package:food_delivery_app/features/home/model/restaurant_model.dart';
 import 'package:food_delivery_app/features/restaurant/provider/restaurant_provider.dart';
 import 'package:get/get.dart';
 
@@ -11,7 +12,7 @@ class FoodController extends GetxController {
   var errorMessage = ''.obs;
   var quantity = 1.obs;
   var isFavorite = false.obs;
-  final double price = 12.99;
+  // final double price = 12.99;
 
   var categoryList = <CategoryModel>[].obs;
   var selectedCategoryIndex = 0.obs;
@@ -29,6 +30,18 @@ class FoodController extends GetxController {
       categoryId = categoryList[index].id as String?;
     }
     fetchFoods(restaurantId: restaurant.id, categoryId: categoryId);
+  }
+
+  void fetchRestaurant() async {
+    try {
+      isLoading(true);
+      final restaurants = await _restaurantProvider.fetchFoods();
+      foodList.value = restaurants;
+    } catch (e) {
+      errorMessage.value = e.toString();
+    } finally {
+      isLoading(false);
+    }
   }
 
   @override
@@ -70,5 +83,5 @@ class FoodController extends GetxController {
     isFavorite.value = !isFavorite.value;
   }
 
-  double get totalPrice => quantity.value * price;
+  double get totalPrice => quantity.value * foodList[0].price;
 }
