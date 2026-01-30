@@ -54,7 +54,7 @@ class AuthController extends GetxController {
       // Store token securely
       await saveToken(token.value);
 
-      Get.offAllNamed('/home');
+      Get.offAllNamed('/navbar');
     } on AuthException catch (e) {
       Get.snackbar('Login Failed', e.message);
       print(e.message);
@@ -71,7 +71,7 @@ class AuthController extends GetxController {
         email: email,
         password: password,
       );
-
+      Get.offAllNamed('/navbar');
       Get.snackbar('Success', 'Account created. Please login.');
       Get.back();
     } on AuthException catch (e) {

@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 
 class HomeView extends GetView<RestaurantController> {
   HomeView({super.key});
-  CategoryController categoryController = Get.find<CategoryController>();
+  final CategoryController categoryController = Get.find<CategoryController>();
 
   @override
   Widget build(BuildContext context) {

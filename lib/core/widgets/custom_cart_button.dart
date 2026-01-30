@@ -3,16 +3,18 @@ import 'package:food_delivery_app/core/constants/app_colors.dart';
 import 'package:food_delivery_app/features/auth/controller/auth_controller.dart';
 import 'package:get/get.dart';
 
-class CustomButton extends GetView<AuthController> {
+class CustomCartButton extends GetView<AuthController> {
   final String btntext;
   final String btnicon;
+  final bool? isBorder;
   final Function()? onTap;
 
-  const CustomButton({
+  const CustomCartButton({
     super.key,
     required this.btntext,
     required this.btnicon,
     this.onTap,
+    this.isBorder,
   });
 
   @override
@@ -23,11 +25,19 @@ class CustomButton extends GetView<AuthController> {
       return GestureDetector(
         onTap: loading ? null : onTap,
         child: Container(
-          height: 60,
+          height: 40,
           width: double.infinity,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            color: AppColors.primaryColor.withOpacity(loading ? 0.7 : 1.0),
+            border: Border.all(
+              color: isBorder == true
+                  ? AppColors.primaryColor
+                  : Colors.transparent,
+              width: 1.5,
+            ),
+            color: isBorder == true
+                ? null
+                : AppColors.primaryColor.withOpacity(loading ? 0.7 : 1.0),
           ),
           child: loading
               ? Center(
@@ -47,8 +57,10 @@ class CustomButton extends GetView<AuthController> {
                     Text(
                       btntext,
                       style: TextStyle(
-                        fontSize: 18,
-                        color: AppColors.whiteColor,
+                        fontSize: 14,
+                        color: isBorder == true
+                            ? AppColors.primaryColor
+                            : AppColors.whiteColor,
                         fontWeight: FontWeight.w700,
                         fontFamily: 'Sen',
                       ),

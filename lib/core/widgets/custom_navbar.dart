@@ -65,7 +65,7 @@ class _CustomNavbarState extends State<CustomNavbar> {
                   _buildNavButton(
                     3,
                     'assets/icons/user (1).png',
-                    'assets/icons/user.png',
+                    'assets/icons/User.png',
                   ),
                 ],
               ),

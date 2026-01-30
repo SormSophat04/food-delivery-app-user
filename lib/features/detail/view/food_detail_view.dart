@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/core/widgets/custom_about_restaurant.dart';
 import 'package:food_delivery_app/core/widgets/custom_button.dart';
 import 'package:food_delivery_app/core/widgets/custom_topbar.dart';
 import 'package:food_delivery_app/features/restaurant/controller/food_controller.dart';
 import 'package:get/get.dart';
 
 import '../../../core/constants/app_colors.dart';
-import '../../../core/widgets/custom_about_restaurant.dart';
 
 class FoodDetailView extends GetView<FoodController> {
-  final restaurant = Get.arguments;
+  final foods = Get.arguments;
   FoodDetailView({super.key});
 
   @override
@@ -17,7 +17,7 @@ class FoodDetailView extends GetView<FoodController> {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          Container(
+          SizedBox(
             height: double.infinity,
             width: double.infinity,
             child: SingleChildScrollView(
@@ -32,16 +32,17 @@ class FoodDetailView extends GetView<FoodController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: 120),
-                        _buildImageRestaurant(restaurant.image ??
-                            'assets/images/category_image.png'),
+                        _buildImageRestaurant(img: foods.image ?? ''),
                         SizedBox(height: 24),
-                        _buildNameRestaurant(),
+                        _buildFoodName(foodName: foods.name ?? 'No Name'),
                         SizedBox(height: 4),
-                        _buildDescriptionRestaurant(),
+                        _buildFoodDescription(
+                            foodDescription:
+                                foods.description ?? 'No Description'),
                         SizedBox(height: 12),
                         CustomAboutRestaurant(
-                          rate: '${restaurant.rating}',
-                          isFree: restaurant.isOpen,
+                          rate: '4.5',
+                          isFree: true,
                         ),
                       ],
                     ),
@@ -62,17 +63,18 @@ class FoodDetailView extends GetView<FoodController> {
                 actionIcon2: ''),
           ),
           Positioned(
-            bottom: 30,
+            bottom: 120,
             left: 15,
             right: 15,
-            child: Obx(
-              () => controller.quantity.value < 1
-                  ? CustomButton(
-                      btntext: 'Add to Cart',
-                      btnicon: '',
-                      onTap: controller.increment,
-                    )
-                  : _buildAddCart(),
+            child: _buildAddCart(),
+          ),
+          Positioned(
+            bottom: 50,
+            left: 15,
+            right: 15,
+            child: CustomButton(
+              btntext: 'Add to cart',
+              btnicon: '',
             ),
           )
         ],
@@ -157,16 +159,16 @@ class FoodDetailView extends GetView<FoodController> {
     );
   }
 
-  Widget _buildImageRestaurant(String img) {
+  Widget _buildImageRestaurant({required String img}) {
     return Obx(
       () => Container(
-        height: 200,
+        height: 300,
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(24),
           color: Colors.grey,
           image: DecorationImage(
-            image: AssetImage(img),
+            image: NetworkImage(img),
             fit: BoxFit.cover,
           ),
         ),
@@ -199,9 +201,9 @@ class FoodDetailView extends GetView<FoodController> {
     );
   }
 
-  Widget _buildNameRestaurant() {
+  Widget _buildFoodName({required String foodName}) {
     return Text(
-      "pizza calzone european",
+      foodName,
       style: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.w700,
@@ -211,9 +213,9 @@ class FoodDetailView extends GetView<FoodController> {
     );
   }
 
-  Widget _buildDescriptionRestaurant() {
+  Widget _buildFoodDescription({required String foodDescription}) {
     return Text(
-      "Maecenas sed diam eget risus varius blandit sit amet non magna. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.",
+      foodDescription,
       style: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w400,

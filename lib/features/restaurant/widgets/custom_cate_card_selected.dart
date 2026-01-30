@@ -7,8 +7,14 @@ import '../../../core/constants/app_colors.dart';
 class CustomCateCardSelected extends GetView<FoodController> {
   final String name;
   final String foodimage;
+  final String foodPrice;
+  final String restauranName;
   const CustomCateCardSelected(
-      {super.key, required this.foodimage, required this.name});
+      {super.key,
+      required this.foodimage,
+      required this.name,
+      required this.foodPrice,
+      required this.restauranName});
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +87,7 @@ class CustomCateCardSelected extends GetView<FoodController> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          '\$19',
+          "\$$foodPrice",
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
@@ -122,7 +128,7 @@ class CustomCateCardSelected extends GetView<FoodController> {
 
   Widget _buildRestaurantName() {
     return Text(
-      'Restaurant Name',
+      restauranName,
       style: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w400,

@@ -13,10 +13,10 @@ class RestaurantController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchRestaurants();
+    _fetchRestaurants();
   }
 
-  void fetchRestaurants() async {
+  void _fetchRestaurants() async {
     try {
       isLoading(true);
       print('Fetching restaurants...');

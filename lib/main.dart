@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:food_delivery_app/app/env.dart';
 import 'package:food_delivery_app/core/bindings/initial_binding.dart';
 import 'package:food_delivery_app/core/provider/api_provider.dart';
 import 'package:food_delivery_app/core/routes/app_route.dart';

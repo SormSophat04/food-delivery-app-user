@@ -81,8 +81,9 @@ class CustomRestaurantCard extends GetView<RestaurantController> {
                           color: Colors.grey,
                           borderRadius: BorderRadius.circular(15),
                           image: DecorationImage(
-                            image:
-                                AssetImage('assets/images/category_image.png'),
+                            image: NetworkImage(controller
+                                .restaurantList[index].image
+                                .toString()),
                             fit: BoxFit.cover,
                           ),
                         ),

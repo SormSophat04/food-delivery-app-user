@@ -17,63 +17,62 @@ class RestaurantView extends GetView<FoodController> {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          Container(
-            child: SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
-                child: Column(
-                  children: [
-                    //About Restaurant
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: 120),
-                          _buildImageRestaurant(),
-                          SizedBox(height: 24),
-                          _buildNameRestaurant(name: restaurant.name),
-                          SizedBox(height: 4),
-                          _buildDescriptionRestaurant(
-                            description: restaurant.description,
-                          ),
-                          SizedBox(height: 12),
-                          CustomAboutRestaurant(
-                            rate: '${restaurant.rating}',
-                            isFree: restaurant.isOpen,
-                          ),
-                        ],
+          SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                //About Restaurant
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 120),
+                      _buildImageRestaurant(img: restaurant.image),
+                      SizedBox(height: 24),
+                      _buildNameRestaurant(name: restaurant.name),
+                      SizedBox(height: 4),
+                      _buildDescriptionRestaurant(
+                        description: restaurant.description,
                       ),
-                    ),
-                    SizedBox(height: 24),
+                      SizedBox(height: 12),
+                      CustomAboutRestaurant(
+                        rate: '${restaurant.rating}',
+                        isFree: restaurant.isOpen,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 24),
 
-                    // Restaurant Category
-                    Obx(
-                      () => CustomCategoryBar(
-                        selectedIndex: controller.selectedCategoryIndex.value,
-                        onCategorySelected: controller.selectCategory,
-                      ),
-                    ),
-                    SizedBox(height: 24),
+                // Restaurant Category
+                Obx(
+                  () => CustomCategoryBar(
+                    selectedIndex: controller.selectedCategoryIndex.value,
+                    onCategorySelected: controller.selectCategory,
+                  ),
+                ),
+                SizedBox(height: 24),
 
-                    //Item Category
-                    Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          _buildCateNameSelected(),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          _buildGridFood(),
-                        ],
+                //Item Category
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      _buildCateNameSelected(),
+                      SizedBox(
+                        height: 20,
                       ),
-                    )
-                  ],
-                )),
+                      _buildGridFood(),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
           Positioned(
             top: 50,
@@ -132,27 +131,32 @@ class RestaurantView extends GetView<FoodController> {
             crossAxisCount: 2,
             crossAxisSpacing: 10,
             mainAxisSpacing: 10,
-            childAspectRatio: 0.83),
+            childAspectRatio: 0.9),
         itemBuilder: (context, index) => GestureDetector(
-          onTap: () => Get.toNamed('/foodDetail', arguments: restaurant),
+          onTap: () => Get.toNamed(
+            '/foodDetail',
+            arguments: controller.foodList[index],
+          ),
           child: CustomCateCardSelected(
             name: controller.filteredFoodList[index].name,
-            foodimage: 'assets/images/category_image.png',
+            foodimage: controller.filteredFoodList[index].image.toString(),
+            foodPrice: controller.filteredFoodList[index].price.toString(),
+            restauranName: restaurant.name,
           ),
         ),
       );
     });
   }
 
-  Widget _buildImageRestaurant() {
+  Widget _buildImageRestaurant({required String img}) {
     return Container(
-      height: 200,
+      height: 300,
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
         color: Colors.grey,
         image: DecorationImage(
-          image: AssetImage('assets/images/category_image.png'),
+          image: NetworkImage(img),
           fit: BoxFit.cover,
         ),
       ),
