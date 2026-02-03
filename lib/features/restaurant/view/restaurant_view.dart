@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/core/constants/app_colors.dart';
+import 'package:food_delivery_app/core/routes/app_route.dart';
 import 'package:food_delivery_app/core/widgets/custom_about_restaurant.dart';
 import 'package:food_delivery_app/core/widgets/custom_topbar.dart';
 import 'package:food_delivery_app/core/widgets/custom_category_bar.dart';
+import 'package:food_delivery_app/features/home/controller/category_controller.dart';
 import 'package:food_delivery_app/features/restaurant/controller/food_controller.dart';
 import 'package:food_delivery_app/features/restaurant/widgets/custom_cate_card_selected.dart';
 import 'package:get/get.dart';
@@ -92,19 +94,35 @@ class RestaurantView extends GetView<FoodController> {
   }
 
   Widget _buildCateNameSelected() {
+    final CategoryController categoryController =
+        Get.find<CategoryController>();
     return Obx(
-      () => Text(
-        controller.selectedCategoryIndex.value == 0
-            ? 'All'
-            : controller
-                .categoryList[controller.selectedCategoryIndex.value].name,
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w400,
-          color: AppColors.blackColor,
-          fontFamily: 'Sen',
-        ),
-      ),
+      () {
+        if (categoryController.categoryList.isEmpty ||
+            controller.selectedCategoryIndex.value >=
+                categoryController.categoryList.length) {
+          return Text(
+            '',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w400,
+              color: AppColors.blackColor,
+              fontFamily: 'Sen',
+            ),
+          );
+        }
+        return Text(
+          '${categoryController.categoryList[controller.selectedCategoryIndex.value].name} ',
+          // '(${categoryController.categoryCount.toString()})',
+
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w400,
+            color: AppColors.blackColor,
+            fontFamily: 'Sen',
+          ),
+        );
+      },
     );
   }
 
@@ -118,12 +136,12 @@ class RestaurantView extends GetView<FoodController> {
         return Center(child: Text(controller.errorMessage.value));
       }
 
-      if (controller.filteredFoodList.isEmpty) {
+      if (controller.foodList.isEmpty) {
         return Center(child: Text('No foods found'));
       }
 
       return GridView.builder(
-        itemCount: controller.filteredFoodList.length,
+        itemCount: controller.foodList.length,
         shrinkWrap: true,
         padding: EdgeInsets.zero,
         physics: NeverScrollableScrollPhysics(),
@@ -131,16 +149,16 @@ class RestaurantView extends GetView<FoodController> {
             crossAxisCount: 2,
             crossAxisSpacing: 10,
             mainAxisSpacing: 10,
-            childAspectRatio: 0.9),
+            childAspectRatio: 0.82),
         itemBuilder: (context, index) => GestureDetector(
           onTap: () => Get.toNamed(
-            '/foodDetail',
+            AppRoute.foodDetail,
             arguments: controller.foodList[index],
           ),
           child: CustomCateCardSelected(
-            name: controller.filteredFoodList[index].name,
-            foodimage: controller.filteredFoodList[index].image.toString(),
-            foodPrice: controller.filteredFoodList[index].price.toString(),
+            name: controller.foodList[index].name,
+            foodimage: controller.foodList[index].image.toString(),
+            foodPrice: controller.foodList[index].price.toString(),
             restauranName: restaurant.name,
           ),
         ),

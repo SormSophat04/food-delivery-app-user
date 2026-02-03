@@ -1,207 +1,91 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery_app/core/constants/app_colors.dart';
-import 'package:food_delivery_app/core/widgets/custom_button.dart';
-import 'package:food_delivery_app/core/widgets/custom_cart_button.dart';
 import 'package:food_delivery_app/core/widgets/custom_topbar.dart';
+import 'package:food_delivery_app/features/cart/controller/cart_controller.dart';
+import 'package:food_delivery_app/features/cart/widgets/custom_card.dart';
+import 'package:get/get.dart';
 
-class CartView extends StatefulWidget {
+class CartView extends StatelessWidget {
   const CartView({super.key});
 
   @override
-  State<CartView> createState() => _CartViewState();
-}
-
-class _CartViewState extends State<CartView> {
-  int selectedIndex = 0;
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Stack(
-        children: [
-          Container(
-            height: 400,
-          ),
-          ListView.builder(
-            itemCount: 10,
-            shrinkWrap: true,
-            physics: BouncingScrollPhysics(),
-            padding: EdgeInsets.only(
-              top: 120,
-              left: 15,
-              right: 15,
-              bottom: 100,
-            ),
-            itemBuilder: (context, index) {
-              return SizedBox(
-                height: 210,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Food",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: 'Sen',
-                        color: AppColors.blackColor,
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    Divider(),
-                    SizedBox(height: 5),
-                    Row(
-                      children: [
-                        _buildImage(),
-                        SizedBox(width: 14),
-                        _buildAboutFood(),
-                      ],
-                    ),
-                    SizedBox(height: 24),
-                    _buildButton(),
-                  ],
-                ),
-              );
-            },
-          ),
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: Container(
+    return GetBuilder<CartController>(
+      init: CartController(),
+      builder: (controller) => Scaffold(
+        backgroundColor: Colors.white,
+        body: Stack(
+          children: [
+            Container(
+              height: double.infinity,
               width: double.infinity,
-              height: 100,
-              color: Colors.amber,
-              child: Row(
-                children: [
-                  // Container(
-                  //   decoration: BoxDecoration(
-                  //     border: Border(
-                  //       bottom:
-                  //           BorderSide(color: AppColors.primaryColor, width: 2),
-                  //     ),
-                  //   ),
-                  //   child: Text('Ongoing'),
-                  // ),
-                  // Container(
-                  //   decoration: BoxDecoration(
-                  //     border: Border(
-                  //       bottom:
-                  //           BorderSide(color: AppColors.primaryColor, width: 2),
-                  //     ),
-                  //   ),
-                  //   child: Text('Ongoing'),
-                  // ),
-                ],
+              child: CustomCard(),
+            ),
+            Positioned(
+              top: 50,
+              left: 0,
+              right: 0,
+              child: CustomTopbar(
+                title: 'Cart',
+                actionIcon1: 'assets/icons/menu.png',
+                bgColor: AppColors.greyBtn,
+                cartNumber: '',
+                actionIcon2: '',
               ),
             ),
-          ),
-        ],
+            Positioned(
+              bottom: 80,
+              left: 15,
+              right: 15,
+              child: _buildCheckout(),
+            )
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildImage() {
+  Widget _buildCheckout() {
     return Container(
-      height: 70,
-      width: 70,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10), color: Colors.grey),
-    );
-  }
-
-  Widget _buildAboutFood() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Text(
-              'Pizza Hut',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Sen',
-                color: AppColors.blackColor,
-              ),
-            ),
-            SizedBox(width: 100),
-            Text(
-              'IN-615332',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Sen',
-                color: AppColors.blackColor,
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: 12),
-        Row(
-          children: [
-            Text(
-              '\$22',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Sen',
-                color: AppColors.blackColor,
-              ),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Text(
-              '|',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Sen',
-                color: Colors.grey,
-              ),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Text(
-              '05 Items',
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-                fontFamily: 'Sen',
-                color: Colors.grey,
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildButton() {
-    return Container(
-      height: 50,
+      height: 60.h,
       width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 8),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: AppColors.primaryColor, width: 2),
+          borderRadius: BorderRadius.circular(19)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Expanded(
-            child: CustomCartButton(
-              btntext: 'Track Order',
-              btnicon: '',
+          Text(
+            'Total: \$${30}',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+              color: AppColors.blackColor,
+              fontFamily: 'Sen',
             ),
           ),
-          SizedBox(width: 70),
-          Expanded(
-              child: CustomCartButton(
-            btntext: 'Cancel',
-            btnicon: '',
-            isBorder: true,
-          ))
+          Container(
+            height: 40,
+            padding: EdgeInsets.symmetric(horizontal: 14),
+            decoration: BoxDecoration(
+              color: AppColors.primaryColor,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Center(
+              child: Text(
+                'Checkout',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white,
+                  fontFamily: 'Sen',
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );

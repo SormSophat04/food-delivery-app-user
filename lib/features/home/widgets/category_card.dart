@@ -69,7 +69,7 @@ class CategoryCard extends StatelessWidget {
 
   Widget _catName() {
     return Text(
-      category.name,
+      category.name ?? '',
       style: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.bold,

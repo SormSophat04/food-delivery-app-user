@@ -45,6 +45,7 @@ dependencies:
   supabase_flutter: ^2.12.0
   dotenv: ^4.2.0
   flutter_secure_storage: ^9.2.2
+  flutter_slidable: ^4.0.3
 
 dev_dependencies:
   flutter_test:
