@@ -1,5 +1,4 @@
-import 'package:food_delivery_app/features/home/model/category_model.dart';
-import 'package:food_delivery_app/features/home/model/restaurant_model.dart';
+import 'package:food_delivery_app/features/home/controller/category_controller.dart';
 import 'package:food_delivery_app/features/restaurant/provider/restaurant_provider.dart';
 import 'package:get/get.dart';
 
@@ -7,81 +6,68 @@ import '../model/food_model.dart';
 
 class FoodController extends GetxController {
   final RestaurantProvider _restaurantProvider = RestaurantProvider();
+  final CategoryController categoryController = Get.find<CategoryController>();
   var foodList = <FoodModel>[].obs;
-  var isLoading = true.obs;
+
+  var isLoading = false.obs;
   var errorMessage = ''.obs;
-  var quantity = 1.obs;
-  var isFavorite = false.obs;
-  // final double price = 12.99;
-
-  var categoryList = <CategoryModel>[].obs;
   var selectedCategoryIndex = 0.obs;
-
   final restaurant = Get.arguments;
-
-  List<FoodModel> get filteredFoodList {
-    return foodList;
-  }
 
   void selectCategory(int index) {
     selectedCategoryIndex.value = index;
-    String? categoryId;
-    if (index != 0) {
-      categoryId = categoryList[index].id as String?;
-    }
-    fetchFoods(restaurantId: restaurant.id, categoryId: categoryId);
-  }
-
-  void fetchRestaurant() async {
-    try {
-      isLoading(true);
-      final restaurants = await _restaurantProvider.fetchFoods();
-      foodList.value = restaurants;
-    } catch (e) {
-      errorMessage.value = e.toString();
-    } finally {
-      isLoading(false);
+    if (index == 0) {
+      getFoodAll(restaurant.id);
+    } else {
+      if (index < categoryController.categoryList.length) {
+        final categoryId = categoryController.categoryList[index].id;
+        if (categoryId != null) {
+          getFoodByRestaurantIdAndCategoryId(restaurant.id, categoryId);
+        }
+      } else {
+        print("Error: Selected category index is out of bounds.");
+      }
     }
   }
 
   @override
   void onInit() {
     super.onInit();
-    if (restaurant != null) {
-      fetchFoods(restaurantId: restaurant.id);
-    } else {
-      fetchFoods();
-    }
-    print(errorMessage);
+    getFoodAll(restaurant.id);
   }
 
-  void fetchFoods({String? restaurantId, String? categoryId}) async {
+  Future<void> updateSelectCategory(int index) async {
+    selectedCategoryIndex.value = index;
+    if (index == 0) {
+      getFoodAll(restaurant.id);
+    } else {
+      getFoodByRestaurantIdAndCategoryId(restaurant.id, index);
+    }
+  }
+
+  Future<void> getFoodAll(int restaurantId) async {
     try {
-      isLoading(true);
-      final foods = await _restaurantProvider.fetchFoods(
-          restaurantId: restaurantId, categoryId: categoryId);
-      foodList.value = foods;
+      isLoading.value = true;
+      final data =
+          await _restaurantProvider.getFoodAllByRestaurantId(restaurantId);
+      foodList.value = data.map((e) => FoodModel.fromJson(e)).toList();
     } catch (e) {
       errorMessage.value = e.toString();
-      print(errorMessage.value = e.toString());
     } finally {
-      isLoading(false);
+      isLoading.value = false;
     }
   }
 
-  void increment() {
-    quantity.value++;
-  }
-
-  void decrement() {
-    if (quantity.value > 1) {
-      quantity.value--;
+  Future<void> getFoodByRestaurantIdAndCategoryId(
+      int restaurantId, int categoryId) async {
+    try {
+      final data = await _restaurantProvider.getFoodByRestaurantIdAndCategoryId(
+          restaurantId, categoryId);
+      foodList.value = data.map((item) => FoodModel.fromJson(item)).toList();
+    } catch (e) {
+      errorMessage.value = e.toString();
+    } finally {
+      isLoading.value = false;
     }
   }
-
-  void toggleFavorite() {
-    isFavorite.value = !isFavorite.value;
-  }
-
-  double get totalPrice => quantity.value * foodList[0].price;
 }

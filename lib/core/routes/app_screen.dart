@@ -4,6 +4,7 @@ import 'package:food_delivery_app/features/auth/view/forgot_password_view.dart';
 import 'package:food_delivery_app/features/auth/view/toggle_screen.dart';
 import 'package:food_delivery_app/features/auth/view/verifycode_view.dart';
 import 'package:food_delivery_app/core/widgets/custom_navbar.dart';
+import 'package:food_delivery_app/features/cart/binding/cart_binding.dart';
 import 'package:food_delivery_app/features/cart/view/cart_view.dart';
 import 'package:food_delivery_app/features/detail/binding/fooddetail_binding.dart';
 import 'package:food_delivery_app/features/detail/view/food_detail_view.dart';
@@ -21,6 +22,11 @@ import '../../features/home/binding/home_binding.dart';
 
 class AppScreen {
   static final screens = [
+    GetPage(
+      name: AppRoute.bottomnavbar,
+      page: () => const CustomNavbar(),
+      middlewares: [AuthGuard()],
+    ),
     GetPage(
       name: AppRoute.splash,
       page: () => const SplashView(),
@@ -53,11 +59,7 @@ class AppScreen {
     GetPage(
       name: AppRoute.cart,
       page: () => const CartView(),
-    ),
-    GetPage(
-      name: AppRoute.bottomnavbar,
-      page: () => const CustomNavbar(),
-      middlewares: [AuthGuard()],
+      binding: CartBinding(),
     ),
     GetPage(
       name: AppRoute.profile,

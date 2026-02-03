@@ -16,13 +16,10 @@ class RestaurantController extends GetxController {
     _fetchRestaurants();
   }
 
-  void _fetchRestaurants() async {
+  Future<void> _fetchRestaurants() async {
     try {
       isLoading(true);
-      print('Fetching restaurants...');
       var response = await _apiProvider.get(ApiEndpoint.restaurants);
-      print('Response status code: ${response.statusCode}');
-      print('Response data: ${response.data}');
 
       if (response.statusCode == 200) {
         if (response.data is Map && response.data.containsKey('restaurants')) {
@@ -34,7 +31,7 @@ class RestaurantController extends GetxController {
               .map((e) => RestaurantModel.fromJson(e))
               .toList();
         } else {
-            errorMessage.value = "Unexpected response format";
+          errorMessage.value = "Unexpected response format";
         }
       } else {
         errorMessage.value = response.statusMessage ?? 'Something went wrong';

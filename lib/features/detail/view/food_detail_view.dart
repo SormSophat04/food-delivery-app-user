@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery_app/core/widgets/custom_about_restaurant.dart';
 import 'package:food_delivery_app/core/widgets/custom_button.dart';
 import 'package:food_delivery_app/core/widgets/custom_topbar.dart';
-import 'package:food_delivery_app/features/restaurant/controller/food_controller.dart';
+import 'package:food_delivery_app/features/detail/controller/detail_controller.dart';
 import 'package:get/get.dart';
 
 import '../../../core/constants/app_colors.dart';
 
-class FoodDetailView extends GetView<FoodController> {
-  final foods = Get.arguments;
-  FoodDetailView({super.key});
+class FoodDetailView extends GetView<DetailController> {
+  const FoodDetailView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +30,16 @@ class FoodDetailView extends GetView<FoodController> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 120),
-                        _buildImageRestaurant(img: foods.image ?? ''),
+                        SizedBox(height: 110),
+                        _buildImageRestaurant(
+                            img: controller.foods.image.toString()),
                         SizedBox(height: 24),
-                        _buildFoodName(foodName: foods.name ?? 'No Name'),
+                        _buildFoodName(
+                            foodName: controller.foods.name.toString()),
                         SizedBox(height: 4),
                         _buildFoodDescription(
                             foodDescription:
-                                foods.description ?? 'No Description'),
+                                controller.foods.description.toString()),
                         SizedBox(height: 12),
                         CustomAboutRestaurant(
                           rate: '4.5',
@@ -63,16 +64,17 @@ class FoodDetailView extends GetView<FoodController> {
                 actionIcon2: ''),
           ),
           Positioned(
-            bottom: 120,
+            bottom: 110,
             left: 15,
             right: 15,
             child: _buildAddCart(),
           ),
           Positioned(
-            bottom: 50,
+            bottom: 40,
             left: 15,
             right: 15,
             child: CustomButton(
+              onTap: controller.addToCart,
               btntext: 'Add to cart',
               btnicon: '',
             ),
@@ -96,7 +98,7 @@ class FoodDetailView extends GetView<FoodController> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              '\$${controller.totalPrice.toStringAsFixed(2)}',
+              '\$${controller.total}',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w500,

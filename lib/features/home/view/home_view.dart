@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/core/constants/app_colors.dart';
+import 'package:food_delivery_app/core/routes/app_route.dart';
 import 'package:food_delivery_app/features/auth/controller/auth_controller.dart';
 import 'package:food_delivery_app/features/home/controller/category_controller.dart';
 import 'package:food_delivery_app/features/home/controller/restaurant_controller.dart';
@@ -11,7 +12,7 @@ import 'package:get/get.dart';
 
 class HomeView extends GetView<RestaurantController> {
   HomeView({super.key});
-  final CategoryController categoryController = Get.find<CategoryController>();
+  final CategoryController categoryController = CategoryController();
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class HomeView extends GetView<RestaurantController> {
             const SizedBox(height: 20),
             _welcomeText(),
             const SizedBox(height: 20),
-            CustomSearch(onTap: () => Get.toNamed('/search')),
+            CustomSearch(onTap: () => Get.toNamed(AppRoute.search)),
             const SizedBox(height: 30),
             _categories(),
             const SizedBox(height: 20),
@@ -50,7 +51,7 @@ class HomeView extends GetView<RestaurantController> {
                   itemCount: categoryController.categoryList.length,
                   itemBuilder: (context, index) {
                     final category = categoryController.categoryList[index];
-                    return CategoryCard(category: category);
+                    return CategoryCard(category: category);  
                   },
                 ),
               );

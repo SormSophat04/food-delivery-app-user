@@ -17,13 +17,15 @@ class CustomCategoryBar extends GetView<CategoryController> {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 46,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: controller.categoryList.length,
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        itemBuilder: (context, index) {
-          return _buildCategory(index);
-        },
+      child: Obx(
+        () => ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: controller.categoryList.length,
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          itemBuilder: (context, index) {
+            return _buildCategory(index);
+          },
+        ),
       ),
     );
   }
@@ -44,7 +46,7 @@ class CustomCategoryBar extends GetView<CategoryController> {
         ),
         child: Center(
           child: Text(
-            controller.categoryList[index].name,
+            controller.categoryList[index].name ?? '',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w400,
