@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:food_delivery_app/core/widgets/success_dialog.dart';
 import 'package:food_delivery_app/features/auth/controller/auth_controller.dart';
 import 'package:food_delivery_app/features/detail/provider/detail_provider.dart';
 import 'package:food_delivery_app/features/restaurant/model/food_model.dart';
@@ -40,10 +43,20 @@ class DetailController extends GetxController {
         quantity: quantity.value,
       );
 
-      Get.snackbar('Success', 'Added to cart.');
-    } catch (e) {
+      Get.dialog(
+        SuccessDialog(
+          title: 'Success',
+          message: 'Add to cart successfully',
+          onPressed: () {
+            Get.back();
+            Get.back();
+          },
+        ),
+      );
+    } catch (e, stackTrace) {
       addErrorMessage.value = e.toString();
       Get.snackbar('Add to cart failed', e.toString());
+      log('Error adding to cart: $e', stackTrace: stackTrace);
     } finally {
       isAdding.value = false;
     }

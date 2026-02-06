@@ -4,7 +4,6 @@ import 'package:food_delivery_app/core/routes/app_route.dart';
 import 'package:food_delivery_app/core/widgets/custom_about_restaurant.dart';
 import 'package:food_delivery_app/core/widgets/custom_topbar.dart';
 import 'package:food_delivery_app/core/widgets/custom_category_bar.dart';
-import 'package:food_delivery_app/features/home/controller/category_controller.dart';
 import 'package:food_delivery_app/features/restaurant/controller/food_controller.dart';
 import 'package:food_delivery_app/features/restaurant/widgets/custom_cate_card_selected.dart';
 import 'package:get/get.dart';
@@ -94,13 +93,11 @@ class RestaurantView extends GetView<FoodController> {
   }
 
   Widget _buildCateNameSelected() {
-    final CategoryController categoryController =
-        Get.find<CategoryController>();
     return Obx(
       () {
-        if (categoryController.categoryList.isEmpty ||
+        if (controller.categoryList.isEmpty ||
             controller.selectedCategoryIndex.value >=
-                categoryController.categoryList.length) {
+                controller.categoryList.length) {
           return Text(
             '',
             style: TextStyle(
@@ -112,7 +109,7 @@ class RestaurantView extends GetView<FoodController> {
           );
         }
         return Text(
-          '${categoryController.categoryList[controller.selectedCategoryIndex.value].name} ',
+          '${controller.categoryList[controller.selectedCategoryIndex.value].name} ',
           // '(${categoryController.categoryCount.toString()})',
 
           style: TextStyle(

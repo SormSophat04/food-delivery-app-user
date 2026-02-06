@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/core/constants/app_colors.dart';
 
 class CustomSearch extends StatelessWidget {
   final TextEditingController? controller;
@@ -14,8 +15,8 @@ class CustomSearch extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: 15),
         padding: EdgeInsets.symmetric(horizontal: 15),
         decoration: BoxDecoration(
-          color: Colors.grey.shade200,
-          borderRadius: BorderRadius.circular(10),
+          color: AppColors.whiteColor,
+          borderRadius: BorderRadius.circular(20),
         ),
         child: Row(
           children: [

@@ -10,10 +10,10 @@ class DetailProvider {
       body: {'user_id': userId},
     );
     final cartId = _extractCartId(response.data);
-    if (cartId == null) {
-      throw Exception('Cart id not found in response.');
+    if (cartId != null) {
+      return cartId;
     }
-    return cartId;
+    return await _fetchCartIdByUserId(userId);
   }
 
   Future<void> addToCart({
@@ -21,16 +21,26 @@ class DetailProvider {
     required int foodId,
     required int quantity,
   }) async {
-    final endpoint =
-        ApiEndpoint.cartItemId.replaceFirst('{id}', cartId.toString());
     await _apiProvider.post(
-      endpoint,
+      ApiEndpoint.cartItem,
       body: {
         'cart_id': cartId,
         'food_id': foodId,
         'quantity': quantity,
       },
     );
+  }
+
+  Future<int> _fetchCartIdByUserId(String userId) async {
+    final response = await _apiProvider.get(
+      ApiEndpoint.carts,
+      queryParameters: {'user_id': userId},
+    );
+    final cartId = _extractCartId(response.data);
+    if (cartId == null) {
+      throw Exception('Cart id not found for user.');
+    }
+    return cartId;
   }
 
   int? _extractCartId(dynamic data) {
@@ -49,6 +59,16 @@ class DetailProvider {
         if (inner['cart_id'] != null) {
           return int.tryParse(inner['cart_id'].toString());
         }
+      } else if (inner is List) {
+        for (final item in inner) {
+          final id = _extractCartId(item);
+          if (id != null) return id;
+        }
+      }
+    } else if (data is List) {
+      for (final item in data) {
+        final id = _extractCartId(item);
+        if (id != null) return id;
       }
     }
     return null;

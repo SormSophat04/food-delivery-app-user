@@ -17,7 +17,7 @@ class CartView extends StatelessWidget {
         backgroundColor: Colors.white,
         body: Stack(
           children: [
-            Container(
+            SizedBox(
               height: double.infinity,
               width: double.infinity,
               child: CustomCard(),
@@ -38,7 +38,7 @@ class CartView extends StatelessWidget {
               bottom: 80,
               left: 15,
               right: 15,
-              child: _buildCheckout(),
+              child: _buildCheckout(controller),
             )
           ],
         ),
@@ -46,47 +46,49 @@ class CartView extends StatelessWidget {
     );
   }
 
-  Widget _buildCheckout() {
-    return Container(
-      height: 60.h,
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 8),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(color: AppColors.primaryColor, width: 2),
-          borderRadius: BorderRadius.circular(19)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            'Total: \$${30}',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
-              color: AppColors.blackColor,
-              fontFamily: 'Sen',
-            ),
-          ),
-          Container(
-            height: 40,
-            padding: EdgeInsets.symmetric(horizontal: 14),
-            decoration: BoxDecoration(
-              color: AppColors.primaryColor,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Center(
-              child: Text(
-                'Checkout',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                  fontFamily: 'Sen',
-                ),
+  Widget _buildCheckout(controller) {
+    return Obx(
+      () => Container(
+        height: 60.h,
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(horizontal: 8),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(color: AppColors.primaryColor, width: 2),
+            borderRadius: BorderRadius.circular(19)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Total: \$${controller.totalAmount}',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+                color: AppColors.blackColor,
+                fontFamily: 'Sen',
               ),
             ),
-          )
-        ],
+            Container(
+              height: 40,
+              padding: EdgeInsets.symmetric(horizontal: 14),
+              decoration: BoxDecoration(
+                color: AppColors.primaryColor,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Center(
+                child: Text(
+                  'Order Now',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                    fontFamily: 'Sen',
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

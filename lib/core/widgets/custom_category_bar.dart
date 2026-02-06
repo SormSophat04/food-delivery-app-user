@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/core/constants/app_colors.dart';
-import 'package:food_delivery_app/features/home/controller/category_controller.dart';
+import 'package:food_delivery_app/features/home/controller/restaurant_controller.dart';
 import 'package:get/get.dart';
 
-class CustomCategoryBar extends GetView<CategoryController> {
+class CustomCategoryBar extends GetView<RestaurantController> {
   final int selectedIndex;
   final Function(int) onCategorySelected;
 

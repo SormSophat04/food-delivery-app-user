@@ -1,4 +1,5 @@
-import 'package:food_delivery_app/features/home/controller/category_controller.dart';
+import 'package:food_delivery_app/features/home/controller/restaurant_controller.dart';
+import 'package:food_delivery_app/features/home/model/category_model.dart';
 import 'package:food_delivery_app/features/restaurant/provider/restaurant_provider.dart';
 import 'package:get/get.dart';
 
@@ -6,9 +7,11 @@ import '../model/food_model.dart';
 
 class FoodController extends GetxController {
   final RestaurantProvider _restaurantProvider = RestaurantProvider();
-  final CategoryController categoryController = Get.find<CategoryController>();
-  var foodList = <FoodModel>[].obs;
+  final RestaurantController _restaurantController =
+      Get.find<RestaurantController>();
+  RxList<CategoryModel> get categoryList => _restaurantController.categoryList;
 
+  var foodList = <FoodModel>[].obs;
   var isLoading = false.obs;
   var errorMessage = ''.obs;
   var selectedCategoryIndex = 0.obs;
@@ -19,8 +22,8 @@ class FoodController extends GetxController {
     if (index == 0) {
       getFoodAll(restaurant.id);
     } else {
-      if (index < categoryController.categoryList.length) {
-        final categoryId = categoryController.categoryList[index].id;
+      if (index < _restaurantController.categoryList.length) {
+        final categoryId = _restaurantController.categoryList[index].id;
         if (categoryId != null) {
           getFoodByRestaurantIdAndCategoryId(restaurant.id, categoryId);
         }

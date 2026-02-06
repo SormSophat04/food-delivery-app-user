@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery_app/core/constants/app_colors.dart';
 import 'package:food_delivery_app/core/routes/app_route.dart';
 import 'package:food_delivery_app/features/auth/controller/auth_controller.dart';
-import 'package:food_delivery_app/features/home/controller/category_controller.dart';
 import 'package:food_delivery_app/features/home/controller/restaurant_controller.dart';
 import 'package:food_delivery_app/features/home/widgets/category_card.dart';
 import 'package:food_delivery_app/features/home/widgets/custom_header.dart';
@@ -11,8 +10,7 @@ import 'package:food_delivery_app/features/home/widgets/custom_search.dart';
 import 'package:get/get.dart';
 
 class HomeView extends GetView<RestaurantController> {
-  HomeView({super.key});
-  final CategoryController categoryController = CategoryController();
+  const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,25 +33,16 @@ class HomeView extends GetView<RestaurantController> {
             _categories(),
             const SizedBox(height: 20),
             Obx(() {
-              if (categoryController.isLoading.value) {
+              if (controller.isLoading.value) {
                 return const Center(child: CircularProgressIndicator());
               }
-              if (categoryController.categoryList.isEmpty) {
+              if (controller.categoryAll.isEmpty) {
                 return const Center(child: Text('No categories found.'));
               }
               return SizedBox(
                 height: 170,
                 width: double.infinity,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  shrinkWrap: true,
-                  itemCount: categoryController.categoryList.length,
-                  itemBuilder: (context, index) {
-                    final category = categoryController.categoryList[index];
-                    return CategoryCard(category: category);  
-                  },
-                ),
+                child: CategoryCard()
               );
             }),
             const SizedBox(height: 30),

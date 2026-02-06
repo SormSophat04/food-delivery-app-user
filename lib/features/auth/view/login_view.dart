@@ -160,12 +160,6 @@ class LoginView extends GetView<AuthController> {
   Widget _rememberMe() {
     return Row(
       children: [
-        // Checkbox(
-        //   value: true,
-        //   onChanged: (value) {},
-        //   activeColor: AppColors.primaryColor,
-
-        // ),
         Text(
           'Remember Me',
           style: TextStyle(

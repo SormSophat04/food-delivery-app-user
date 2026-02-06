@@ -13,4 +13,5 @@ class AppRoute {
   static const String profile = '/profile';
   static const String restaurant = '/restaurant';
   static const String foodDetail = '/foodDetail';
+  static const String categoryGroup = '/category';
 }

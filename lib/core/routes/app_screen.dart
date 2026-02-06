@@ -1,3 +1,4 @@
+import 'package:food_delivery_app/core/bindings/initial_binding.dart';
 import 'package:food_delivery_app/core/middleware/auth_guard.dart';
 
 import 'package:food_delivery_app/features/auth/view/forgot_password_view.dart';
@@ -8,6 +9,7 @@ import 'package:food_delivery_app/features/cart/binding/cart_binding.dart';
 import 'package:food_delivery_app/features/cart/view/cart_view.dart';
 import 'package:food_delivery_app/features/detail/binding/fooddetail_binding.dart';
 import 'package:food_delivery_app/features/detail/view/food_detail_view.dart';
+import 'package:food_delivery_app/features/home/view/category_view.dart';
 import 'package:food_delivery_app/features/home/view/home_view.dart';
 import 'package:food_delivery_app/features/onboarding/onboarding_view.dart';
 import 'package:food_delivery_app/features/profile/view/profile_view.dart';
@@ -25,6 +27,7 @@ class AppScreen {
     GetPage(
       name: AppRoute.bottomnavbar,
       page: () => const CustomNavbar(),
+      binding: InitialBinding(),
       middlewares: [AuthGuard()],
     ),
     GetPage(
@@ -73,6 +76,11 @@ class AppScreen {
       name: AppRoute.foodDetail,
       page: () => FoodDetailView(),
       binding: FooddetailBinding(),
+    ),
+    GetPage(
+      name: AppRoute.categoryGroup,
+      page: () => CategoryView(),
+      binding: FoodBinding(),
     ),
   ];
 }
