@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/core/constants/app_colors.dart';
+import 'package:food_delivery_app/core/routes/app_route.dart';
 import 'package:food_delivery_app/core/widgets/custom_button.dart';
 import 'package:food_delivery_app/features/onboarding/widgets/custom_onboarding.dart';
 import 'package:get/get.dart';
@@ -96,8 +97,9 @@ class _OnboardingViewState extends State<OnboardingView> {
                 btntext: 'Done',
                 btnicon: '',
                 onTap: () {
-                  Get.offNamed('/navbar');
+                  Get.offNamed(AppRoute.bottomnavbar);
                 },
+                isLoading: false,
               )
             : CustomButton(
                 btntext: 'Next',
@@ -107,6 +109,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                       duration: Duration(milliseconds: 500),
                       curve: Curves.easeIn);
                 },
+                isLoading: false,
               ),
         SizedBox(height: 6),
         TextButton(

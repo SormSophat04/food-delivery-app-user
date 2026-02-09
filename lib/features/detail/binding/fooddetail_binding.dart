@@ -6,8 +6,8 @@ import 'package:get/get.dart';
 class FooddetailBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => FoodController());
-    Get.lazyPut(() => DetailController());
-    Get.lazyPut(() => AuthController());
+    Get.lazyPut<FoodController>(() => FoodController());
+    Get.lazyPut<DetailController>(() => DetailController());
+    Get.lazyPut<AuthController>(() => AuthController());
   }
 }

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 class CustomTopbar extends StatelessWidget {
   final String title;
   final String actionIcon1;
+  final Function()? onTapAction1;
   final String cartNumber;
   final Color bgColor;
   final String actionIcon2;
@@ -15,6 +16,7 @@ class CustomTopbar extends StatelessWidget {
     required this.bgColor,
     required this.cartNumber,
     required this.actionIcon2,
+    this.onTapAction1,
   });
 
   @override
@@ -51,48 +53,51 @@ class CustomTopbar extends StatelessWidget {
   Widget _actionbtn1() {
     return actionIcon1 == ''
         ? Container()
-        : Container(
-            padding: EdgeInsets.zero,
-            child: Stack(
-              children: [
-                CircleAvatar(
-                  radius: 28,
-                  backgroundColor: bgColor,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.asset(
-                      actionIcon1,
-                      color: bgColor == AppColors.blackColor
-                          ? AppColors.whiteColor
-                          : AppColors.blackColor,
+        : GestureDetector(
+            onTap: onTapAction1,
+            child: Container(
+              padding: EdgeInsets.zero,
+              child: Stack(
+                children: [
+                  CircleAvatar(
+                    radius: 28,
+                    backgroundColor: bgColor,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Image.asset(
+                        actionIcon1,
+                        color: bgColor == AppColors.blackColor
+                            ? AppColors.whiteColor
+                            : AppColors.blackColor,
+                      ),
                     ),
                   ),
-                ),
-                Positioned(
-                  right: 0,
-                  top: 0,
-                  child: cartNumber == ''
-                      ? Container()
-                      : Container(
-                          width: 18,
-                          height: 18,
-                          decoration: BoxDecoration(
-                            color: AppColors.primaryColor,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Center(
-                            child: Text(
-                              cartNumber,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
+                  Positioned(
+                    right: 0,
+                    top: 0,
+                    child: cartNumber == ''
+                        ? Container()
+                        : Container(
+                            width: 18,
+                            height: 18,
+                            decoration: BoxDecoration(
+                              color: AppColors.primaryColor,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Center(
+                              child: Text(
+                                cartNumber,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
           );
   }

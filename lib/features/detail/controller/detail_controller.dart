@@ -10,7 +10,7 @@ class DetailController extends GetxController {
   final DetailProvider _detailProvider = DetailProvider();
   final AuthController _authController = Get.find<AuthController>();
   var foodList = <FoodModel>[].obs;
-  var isLoading = true.obs;
+  var isLoading = false.obs;
   var errorMessage = ''.obs;
   var quantity = 1.obs;
   var isFavorite = false.obs;
@@ -20,18 +20,9 @@ class DetailController extends GetxController {
   final foods = Get.arguments;
 
   Future<void> addToCart() async {
-    if (quantity.value < 1) {
-      Get.snackbar('Invalid quantity', 'Please select at least 1 item.');
-      return;
-    }
-
     final userId = _authController.userId.value;
-    if (userId.isEmpty) {
-      Get.snackbar('Login required', 'Please login to add items to cart.');
-      return;
-    }
-
     try {
+      isLoading.value = true;
       isAdding.value = true;
       addErrorMessage.value = '';
 
@@ -59,6 +50,7 @@ class DetailController extends GetxController {
       log('Error adding to cart: $e', stackTrace: stackTrace);
     } finally {
       isAdding.value = false;
+      isLoading.value = false;
     }
   }
 

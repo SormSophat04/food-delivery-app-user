@@ -56,6 +56,7 @@ class SuccessDialog extends StatelessWidget {
             btntext: 'OK',
             btnicon: '',
             onTap: onPressed ?? () => Get.back(),
+            isLoading: false,
           ),
         ),
       ],

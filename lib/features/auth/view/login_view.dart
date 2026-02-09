@@ -84,10 +84,13 @@ class LoginView extends GetView<AuthController> {
                       children: [_rememberMe(), _forgotPassword()],
                     ),
                     SizedBox(height: 24),
-                    CustomButton(
-                      btntext: 'LOG IN',
-                      btnicon: '',
-                      onTap: () => signIn(),
+                    Obx(
+                      () => CustomButton(
+                        btntext: 'LOG IN',
+                        btnicon: '',
+                        isLoading: controller.isLoading.value,
+                        onTap: () => signIn(),
+                      ),
                     ),
                     SizedBox(height: 24),
                     _singUp(),

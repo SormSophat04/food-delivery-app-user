@@ -45,7 +45,7 @@ class CartController extends GetxController {
       }
       final cartId = await _cartProvider.getCartIdByUserId(userId);
       final items = await _cartProvider.getCartItems(cartId);
-      log('Cart items: ${items.map((e) => e.toJson()).toList()}');
+      // log('Cart items: ${items.map((e) => e.toJson()).toList()}');
       cartItems.value = items;
       await processCartItems();
     } catch (e, stackTrace) {
