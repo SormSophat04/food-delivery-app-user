@@ -35,4 +35,10 @@ class ApiEndpoint {
   //Order Endpoints
   static const String orders = 'orders';
   static const String order = 'orders/{id}';
+
+  //Address Endpoints
+  static const String addrees = 'address';
+
+  // Credit Card Endpoint
+  static const String cards = 'cards';
 }

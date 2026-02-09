@@ -116,6 +116,7 @@ class ForgotPasswordView extends StatelessWidget {
           btntext: 'SEND CODE',
           btnicon: '',
           onTap: () => Get.toNamed('/verifycode'),
+          isLoading: false,
         ),
         SizedBox(height: 6),
         TextButton(

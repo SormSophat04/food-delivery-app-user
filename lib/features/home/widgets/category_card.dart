@@ -1,75 +1,88 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/core/constants/app_colors.dart';
-import 'package:food_delivery_app/features/home/model/category_model.dart';
+import 'package:food_delivery_app/core/routes/app_route.dart';
+import 'package:food_delivery_app/features/home/controller/restaurant_controller.dart';
+import 'package:get/get.dart';
 
-class CategoryCard extends StatelessWidget {
-  final CategoryModel category;
-  const CategoryCard({super.key, required this.category});
+class CategoryCard extends GetView<RestaurantController> {
+  const CategoryCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 175,
-      width: 148,
-      margin: const EdgeInsets.symmetric(horizontal: 5),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-      ),
-      child: Stack(
-        children: [
-          Positioned(
-            bottom: 12,
-            left: 0,
-            right: 0,
-            child: Container(
-              height: 145,
-              width: 148,
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(24),
-                  color: AppColors.whiteColor,
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 10,
-                      color: AppColors.greyColor.withOpacity(0.2),
-                      offset: const Offset(0, 4),
-                    )
-                  ]),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _catName(),
-                  const SizedBox(height: 4),
-                  _startingPrice(),
-                ],
-              ),
-            ),
+    return Obx(
+      () => ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: controller.categoryAll.length,
+        itemBuilder: (context, index) => Container(
+          height: 175,
+          width: 148,
+          margin: const EdgeInsets.symmetric(horizontal: 5),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(24),
           ),
-          Positioned(
-            top: 0,
-            left: 12,
-            right: 12,
-            child: Container(
-              height: 94,
-              decoration: BoxDecoration(
-                color: Colors.grey,
-                borderRadius: BorderRadius.circular(15),
-                image: DecorationImage(
-                  image: AssetImage('assets/images/category_image.png'),
-                  fit: BoxFit.cover,
+          child: GestureDetector(
+            onTap: () => Get.toNamed(AppRoute.categoryGroup,
+                arguments: controller.categoryAll[index]),
+            child: Stack(
+              children: [
+                Positioned(
+                  bottom: 12,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    height: 145,
+                    width: 148,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 12),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(24),
+                        color: AppColors.whiteColor,
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 10,
+                            color: AppColors.greyColor.withOpacity(0.2),
+                            offset: const Offset(0, 4),
+                          )
+                        ]),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _catName(index),
+                        const SizedBox(height: 4),
+                        _startingPrice(),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+                Positioned(
+                  top: 0,
+                  left: 12,
+                  right: 12,
+                  child: Container(
+                    height: 94,
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(15),
+                      image: DecorationImage(
+                        image: NetworkImage(
+                            controller.categoryAll[index].image.toString()),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
 
-  Widget _catName() {
+  Widget _catName(int index) {
     return Text(
-      category.name ?? '',
+      controller.categoryAll[index].name ?? '',
       style: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.bold,

@@ -140,6 +140,7 @@ class VerifycodeView extends StatelessWidget {
           btntext: 'VERIFY',
           btnicon: '',
           onTap: () => Get.toNamed('/home'),
+          isLoading: false,
         ),
         SizedBox(height: 6),
         TextButton(
