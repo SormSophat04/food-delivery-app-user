@@ -21,6 +21,7 @@ class AppRoute {
   static const String payment  = '/payment';
   static const String card  = '/card';
   static const String addPayment  = '/add_payment';
+  static const String order = '/order';
 
 
 }

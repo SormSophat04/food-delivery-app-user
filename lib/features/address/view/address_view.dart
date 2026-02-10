@@ -4,6 +4,7 @@ import 'package:food_delivery_app/core/routes/app_route.dart';
 import 'package:food_delivery_app/core/widgets/custom_button.dart';
 import 'package:food_delivery_app/core/widgets/custom_topbar.dart';
 import 'package:food_delivery_app/features/address/controller/address_controller.dart';
+import 'package:food_delivery_app/features/address/widgets/address_skeleton.dart';
 import 'package:get/get.dart';
 
 class AddressView extends StatelessWidget {
@@ -16,40 +17,75 @@ class AddressView extends StatelessWidget {
         backgroundColor: Colors.white,
         body: Stack(
           children: [
-            Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              child: ListView.builder(
-                itemCount: controller.address.length,
-                padding: EdgeInsets.only(top: 100),
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                    decoration: BoxDecoration(
-                      color: AppColors.whiteColor,
-                      borderRadius: BorderRadius.circular(16),
+            SizedBox(
+              width: double.infinity,
+              height: double.infinity,
+              child: controller.isLoading.value
+                  ? AddressSkeletonList()
+                  : ListView.builder(
+                      itemCount: controller.address.length,
+                      padding: EdgeInsets.only(top: 100, bottom: 110),
+                      itemBuilder: (context, index) {
+                        return Stack(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 8),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 16),
+                              decoration: BoxDecoration(
+                                color: AppColors.whiteColor,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  _buildIcon(),
+                                  SizedBox(width: 16),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        _buildTitleAndAction(controller, index),
+                                        _buildAddressText(controller, index),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Positioned(
+                              top: 0,
+                              left: 32,
+                              child: controller.address[index].isDefault == true
+                                  ? Container(
+                                      padding: EdgeInsetsDirectional.symmetric(
+                                        horizontal: 8,
+                                        vertical: 2,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.primaryColor
+                                            .withOpacity(0.2),
+                                        borderRadius: BorderRadius.circular(14),
+                                      ),
+                                      child: Text(
+                                        "Default",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w500,
+                                          color: AppColors.primaryColor,
+                                          fontFamily: 'Sen',
+                                        ),
+                                      ),
+                                    )
+                                  : Container(),
+                            ),
+                          ],
+                        );
+                      },
                     ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildIcon(),
-                        SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              _buildTitleAndAction(controller, index),
-                              _buildAddressText(controller, index),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
             ),
             Positioned(
               top: 50,
@@ -67,13 +103,11 @@ class AddressView extends StatelessWidget {
               bottom: 40,
               left: 16,
               right: 16,
-              child: Obx(
-                () => CustomButton(
-                  btntext: 'Add New Address',
-                  btnicon: '',
-                  onTap: () => Get.toNamed(AppRoute.newAddress),
-                  isLoading: false,
-                ),
+              child: CustomButton(
+                btntext: 'Add New Address',
+                btnicon: '',
+                onTap: () => Get.toNamed(AppRoute.newAddress),
+                isLoading: false,
               ),
             )
           ],

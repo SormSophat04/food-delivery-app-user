@@ -27,8 +27,8 @@ class CardController extends GetxController {
 
   Future<void> fetchCards() async {
     try {
+      isLoading.value = true;
       cards.value = await _cardProvider.getCards();
-      isLoading.value = false;
       update();
     } on DioException catch (e) {
       print(e.response!.data);

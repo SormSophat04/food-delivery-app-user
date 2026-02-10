@@ -1,6 +1,10 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:food_delivery_app/core/constants/app_colors.dart';
+import 'package:food_delivery_app/core/constants/storage_keys.dart';
+import 'package:food_delivery_app/core/routes/app_route.dart';
+import 'package:food_delivery_app/features/auth/controller/auth_controller.dart';
 import 'package:get/get.dart';
 
 class SplashView extends StatefulWidget {
@@ -11,12 +15,33 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView> {
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
+
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 1), () {
-      Get.offAllNamed('/onBoarding');
-    });
+    _routeFromSplash();
+  }
+
+  Future<void> _routeFromSplash() async {
+    await Future.delayed(const Duration(seconds: 1));
+
+    final hasCompletedOnboarding =
+        await _storage.read(key: StorageKeys.onboardingComplete) == 'true';
+
+    if (!mounted) return;
+
+    if (!hasCompletedOnboarding) {
+      Get.offAllNamed(AppRoute.onBoarding);
+      return;
+    }
+
+    final auth = Get.find<AuthController>();
+    if (auth.isLoggedIn.value) {
+      Get.offAllNamed(AppRoute.bottomnavbar);
+    } else {
+      Get.offAllNamed(AppRoute.login);
+    }
   }
 
   @override

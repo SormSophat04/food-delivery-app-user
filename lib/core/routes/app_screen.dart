@@ -18,6 +18,8 @@ import 'package:food_delivery_app/features/home/binding/home_binding.dart';
 import 'package:food_delivery_app/features/home/view/category_view.dart';
 import 'package:food_delivery_app/features/home/view/home_view.dart';
 import 'package:food_delivery_app/features/onboarding/onboarding_view.dart';
+import 'package:food_delivery_app/features/order/view/order_view.dart';
+import 'package:food_delivery_app/features/order/binding/order_binding.dart';
 import 'package:food_delivery_app/features/payment/binding/payment_binding.dart';
 import 'package:food_delivery_app/features/card/view/add_card_view.dart';
 import 'package:food_delivery_app/features/payment/view/payment_view.dart';
@@ -87,6 +89,11 @@ class AppScreen {
       name: AppRoute.addPayment,
       page: () => AddCardView(),
       binding: PaymentBinding(),
+    ),
+    GetPage(
+      name: AppRoute.order,
+      page: () => OrderView(),
+      binding: OrderBinding(),
     ),
     GetPage(
       name: AppRoute.profile,

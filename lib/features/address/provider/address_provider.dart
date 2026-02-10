@@ -14,6 +14,14 @@ class AddressProvider {
         .toList();
   }
 
+  Future<List<AddressModel>> getAddressDefault(bool isDefault) async {
+    final response =
+        await _apiProvider.get('${ApiEndpoint.addrees}?is_default=$isDefault');
+    return response.data
+        .map<AddressModel>((item) => AddressModel.fromJson(item))
+        .toList();
+  }
+
   Future<void> createAddress(AddressModel addresses) async {
     // log('POST ${ApiEndpoint.addrees} body: ${addresses.toCreateJson()}');
     await _apiProvider.post(

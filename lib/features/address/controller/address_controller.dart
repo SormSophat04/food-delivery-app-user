@@ -16,6 +16,8 @@ class AddressController extends GetxController {
   final TextEditingController apartmentController = TextEditingController();
 
   var address = <AddressModel>[].obs;
+  var addressDefault = <AddressModel>[].obs;
+  var defaultAddress = Rxn<AddressModel>();
   var isLoading = false.obs;
 
   @override
@@ -29,9 +31,25 @@ class AddressController extends GetxController {
       isLoading.value = true;
       final addresses = await _addressProvider.getAddress();
       address.value = addresses;
+      _setDefaultFromList(addresses);
       update();
     } catch (e) {
       Get.snackbar('Error', 'Failed to load addresses: $e');
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  Future<void> fetchDefaultAddresses() async {
+    try {
+      isLoading.value = true;
+      final addresses = await _addressProvider.getAddressDefault(true);
+      addressDefault.value = addresses;
+      _setDefaultFromList(addresses);
+      update();
+    } on DioException catch (e) {
+      print(e.response?.statusCode);
+      print(e.response?.data);
     } finally {
       isLoading(false);
     }
@@ -55,6 +73,7 @@ class AddressController extends GetxController {
           createdAt: null,
           latitude: 11.5431,
           longitude: 104.9211,
+          isDefault: false,
         ),
       );
 
@@ -74,5 +93,16 @@ class AddressController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  void _setDefaultFromList(List<AddressModel> list) {
+    AddressModel? found;
+    for (final item in list) {
+      if (item.isDefault == true) {
+        found = item;
+        break;
+      }
+    }
+    defaultAddress.value = found;
   }
 }
