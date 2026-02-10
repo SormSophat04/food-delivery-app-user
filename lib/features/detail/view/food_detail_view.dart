@@ -73,10 +73,13 @@ class FoodDetailView extends GetView<DetailController> {
             bottom: 40,
             left: 15,
             right: 15,
-            child: CustomButton(
-              onTap: controller.addToCart,
-              btntext: 'Add to cart',
-              btnicon: '',
+            child: Obx(
+              () => CustomButton(
+                onTap: controller.addToCart,
+                btntext: 'Add to cart',
+                btnicon: '',
+                isLoading: controller.isLoading.value,
+              ),
             ),
           )
         ],

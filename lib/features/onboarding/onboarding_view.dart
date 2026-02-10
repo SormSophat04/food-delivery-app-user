@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:food_delivery_app/core/constants/app_colors.dart';
+import 'package:food_delivery_app/core/constants/storage_keys.dart';
+import 'package:food_delivery_app/core/routes/app_route.dart';
 import 'package:food_delivery_app/core/widgets/custom_button.dart';
+import 'package:food_delivery_app/features/auth/controller/auth_controller.dart';
 import 'package:food_delivery_app/features/onboarding/widgets/custom_onboarding.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -15,6 +19,23 @@ class OnboardingView extends StatefulWidget {
 class _OnboardingViewState extends State<OnboardingView> {
   PageController _indicatorController = PageController();
   bool isLastPage = false;
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
+
+  Future<void> _completeOnboarding() async {
+    await _storage.write(
+      key: StorageKeys.onboardingComplete,
+      value: 'true',
+    );
+
+    if (!mounted) return;
+
+    final auth = Get.find<AuthController>();
+    if (auth.isLoggedIn.value) {
+      Get.offAllNamed(AppRoute.bottomnavbar);
+    } else {
+      Get.offAllNamed(AppRoute.login);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,8 +117,9 @@ class _OnboardingViewState extends State<OnboardingView> {
                 btntext: 'Done',
                 btnicon: '',
                 onTap: () {
-                  Get.offNamed('/navbar');
+                  _completeOnboarding();
                 },
+                isLoading: false,
               )
             : CustomButton(
                 btntext: 'Next',
@@ -107,6 +129,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                       duration: Duration(milliseconds: 500),
                       curve: Curves.easeIn);
                 },
+                isLoading: false,
               ),
         SizedBox(height: 6),
         TextButton(

@@ -87,20 +87,23 @@ class SignupView extends GetView<AuthController> {
                       hintText: '# # # # # # # # #',
                     ),
                     SizedBox(height: 20),
-                    CustomButton(
-                      btntext: 'SIGN UP',
-                      btnicon: '',
-                      onTap: () {
-                        
-                        if(_confirmPasswordController.text != _passwordController.text){
-                          Get.snackbar('Error', 'Passwords do not match');
-                          return;
-                        }
-                        controller.register(
-                          _emailController.text,
-                          _passwordController.text,
-                        );
-                      },
+                    Obx(
+                      () => CustomButton(
+                        btntext: 'SIGN UP',
+                        btnicon: '',
+                        isLoading: controller.isLoading.value,
+                        onTap: () {
+                          if (_confirmPasswordController.text !=
+                              _passwordController.text) {
+                            Get.snackbar('Error', 'Passwords do not match');
+                            return;
+                          }
+                          controller.register(
+                            _emailController.text,
+                            _passwordController.text,
+                          );
+                        },
+                      ),
                     ),
                     SizedBox(height: 10),
                     _login(),

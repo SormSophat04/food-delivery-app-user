@@ -8,7 +8,8 @@ class CustomTextField extends StatefulWidget {
   const CustomTextField({
     super.key,
     required this.obscureText,
-    required this.hintText, this.controller,
+    required this.hintText,
+    this.controller,
   });
 
   @override
@@ -24,7 +25,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: AppColors.textfieldColor,
       ),
       child: TextField(
         controller: widget.controller,
@@ -32,7 +32,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         decoration: InputDecoration(
           // Background Color
           filled: true,
-          fillColor: Color(0xFFF0F4F8),
+          fillColor: AppColors.whiteColor,
           // Placeholder Text
           hintText: widget.hintText,
           hintStyle: TextStyle(color: Color(0xFFA0AEC0), fontSize: 16),
@@ -51,10 +51,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 )
               : null,
 
-          // Content Padding
           contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 20),
 
-          // Border Styling (Removes the underline/outline)
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide.none,

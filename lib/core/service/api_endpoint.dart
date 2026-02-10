@@ -34,5 +34,14 @@ class ApiEndpoint {
 
   //Order Endpoints
   static const String orders = 'orders';
-  static const String order = 'orders/{id}';
+  static const String orderItem = 'order_item';
+  static const String orderItemCamel = 'orderItem';
+
+  //Address Endpoints
+  static const String addrees = 'address';
+
+  // Credit Card Endpoint
+  static const String cards = 'cards';
+
+  static const String paymentMethods = 'payment_method';
 }
