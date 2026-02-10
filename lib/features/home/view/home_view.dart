@@ -7,6 +7,7 @@ import 'package:food_delivery_app/features/home/widgets/category_card.dart';
 import 'package:food_delivery_app/features/home/widgets/custom_header.dart';
 import 'package:food_delivery_app/features/home/widgets/custom_restaurant_card.dart';
 import 'package:food_delivery_app/features/home/widgets/custom_search.dart';
+import 'package:food_delivery_app/features/home/widgets/home_skeleton.dart';
 import 'package:get/get.dart';
 
 class HomeView extends GetView<RestaurantController> {
@@ -34,7 +35,7 @@ class HomeView extends GetView<RestaurantController> {
             const SizedBox(height: 20),
             Obx(() {
               if (controller.isLoading.value) {
-                return const Center(child: CircularProgressIndicator());
+                return const CategorySkeletonList();
               }
               if (controller.categoryAll.isEmpty) {
                 return const Center(child: Text('No categories found.'));
@@ -42,7 +43,7 @@ class HomeView extends GetView<RestaurantController> {
               return SizedBox(
                 height: 170,
                 width: double.infinity,
-                child: CategoryCard()
+                child: CategoryCard(),
               );
             }),
             const SizedBox(height: 30),

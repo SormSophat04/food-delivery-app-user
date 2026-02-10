@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery_app/core/constants/app_colors.dart';
 import 'package:food_delivery_app/core/widgets/custom_about_restaurant.dart';
 import 'package:food_delivery_app/features/home/controller/restaurant_controller.dart';
+import 'package:food_delivery_app/features/home/widgets/home_skeleton.dart';
 import 'package:get/get.dart';
 
 class CustomRestaurantCard extends GetView<RestaurantController> {
@@ -11,7 +12,7 @@ class CustomRestaurantCard extends GetView<RestaurantController> {
   Widget build(BuildContext context) {
     return Obx(() {
       if (controller.isLoading.value) {
-        return const Center(child: CircularProgressIndicator());
+        return const RestaurantSkeletonList();
       }
       if (controller.restaurantList.isEmpty) {
         return const Center(child: Text('No restaurants found.'));
@@ -78,7 +79,7 @@ class CustomRestaurantCard extends GetView<RestaurantController> {
                       child: Container(
                         height: 130,
                         decoration: BoxDecoration(
-                          color: Colors.grey,
+                          color: AppColors.greyBtn,
                           borderRadius: BorderRadius.circular(15),
                           image: DecorationImage(
                             image: NetworkImage(controller

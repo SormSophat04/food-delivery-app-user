@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 class InitialBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<AuthController>(() => AuthController());
+    Get.lazyPut<AuthController>(() => AuthController(), fenix: true);
     Get.lazyPut<RestaurantController>(() => RestaurantController());
     Get.lazyPut<FoodController>(() => FoodController());
     Get.lazyPut<DetailController>(() => DetailController());

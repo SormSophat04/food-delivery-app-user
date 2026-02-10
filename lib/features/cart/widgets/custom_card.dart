@@ -4,6 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:food_delivery_app/core/constants/app_colors.dart';
 import 'package:food_delivery_app/features/cart/controller/cart_controller.dart';
 import 'package:food_delivery_app/features/cart/model/cart_item_with_food_model.dart';
+import 'package:food_delivery_app/features/cart/widgets/cart_skeleton.dart';
 import 'package:get/get.dart';
 
 class CustomCard extends GetView<CartController> {
@@ -12,35 +13,48 @@ class CustomCard extends GetView<CartController> {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => ListView.builder(
-        itemCount: controller.cartItemsWithFood.length,
-        shrinkWrap: true,
-        physics: BouncingScrollPhysics(),
-        padding:
-            EdgeInsets.only(top: 120.h, left: 16.w, right: 16.w, bottom: 140.h),
-        itemBuilder: (context, index) {
-          final cartItemWithFood = controller.cartItemsWithFood[index];
-          return Slidable(
-            endActionPane: ActionPane(
-              extentRatio: 0.25,
-              motion: ScrollMotion(),
-              children: [_buildAction(cartItemWithFood.cartItem.id)],
-            ),
-            child: Container(
-              height: 120.h,
-              width: double.infinity,
-              margin: EdgeInsets.only(bottom: 15.h),
-              child: Row(
-                children: [
-                  _buildImage(cartItemWithFood.food.image),
-                  SizedBox(width: 16.w),
-                  _buildNameAndPrice(cartItemWithFood),
-                ],
-              ),
+      () {
+        if (controller.isLoading.value) {
+          return const CartSkeletonList();
+        }
+        if (controller.cartItemsWithFood.isEmpty) {
+          return Padding(
+            padding: EdgeInsets.only(top: 160.h),
+            child: const Center(
+              child: Text('Your cart is empty.'),
             ),
           );
-        },
-      ),
+        }
+        return ListView.builder(
+          itemCount: controller.cartItemsWithFood.length,
+          shrinkWrap: true,
+          physics: BouncingScrollPhysics(),
+          padding: EdgeInsets.only(
+              top: 120.h, left: 16.w, right: 16.w, bottom: 140.h),
+          itemBuilder: (context, index) {
+            final cartItemWithFood = controller.cartItemsWithFood[index];
+            return Slidable(
+              endActionPane: ActionPane(
+                extentRatio: 0.25,
+                motion: ScrollMotion(),
+                children: [_buildAction(cartItemWithFood.cartItem.id)],
+              ),
+              child: Container(
+                height: 120.h,
+                width: double.infinity,
+                margin: EdgeInsets.only(bottom: 15.h),
+                child: Row(
+                  children: [
+                    _buildImage(cartItemWithFood.food.image),
+                    SizedBox(width: 16.w),
+                    _buildNameAndPrice(cartItemWithFood),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 
@@ -80,7 +94,7 @@ class CustomCard extends GetView<CartController> {
       width: 120.w,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
-        color: AppColors.greyColor,
+        color: AppColors.greyBtn,
         image: imageUrl != null
             ? DecorationImage(
                 image: NetworkImage(imageUrl),

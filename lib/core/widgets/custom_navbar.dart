@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/core/constants/app_colors.dart';
+import 'package:food_delivery_app/core/routes/app_route.dart';
 import 'package:food_delivery_app/features/cart/view/cart_view.dart';
 import 'package:food_delivery_app/features/food/view/food_view.dart';
 import 'package:food_delivery_app/features/home/view/home_view.dart';
 import 'package:food_delivery_app/features/profile/view/profile_view.dart';
+import 'package:get/get.dart';
 
 class CustomNavbar extends StatefulWidget {
   const CustomNavbar({super.key});
@@ -29,6 +31,33 @@ class _CustomNavbarState extends State<CustomNavbar> {
       body: Stack(
         children: [
           _pages[_selectedIndex],
+          Positioned(
+            bottom: 78,
+            left: 10,
+            right: 10,
+            child: _selectedIndex == 2
+                ? Container()
+                : GestureDetector(
+                    onTap: () => Get.toNamed(AppRoute.order),
+                    child: Container(
+                      height: 60,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(
+                            color: AppColors.primaryColor, width: 1.5),
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 10,
+                            color: AppColors.greyColor.withOpacity(0.2),
+                            offset: const Offset(0, 4),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+          ),
           Positioned(
             bottom: 0,
             left: 0,

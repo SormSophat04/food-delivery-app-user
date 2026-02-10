@@ -62,7 +62,7 @@ class CategoryCard extends GetView<RestaurantController> {
                   child: Container(
                     height: 94,
                     decoration: BoxDecoration(
-                      color: Colors.grey,
+                      color: AppColors.greyBtn,
                       borderRadius: BorderRadius.circular(15),
                       image: DecorationImage(
                         image: NetworkImage(

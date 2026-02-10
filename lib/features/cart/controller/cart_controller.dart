@@ -19,6 +19,8 @@ class CartController extends GetxController {
   var cartItemsWithFood = <CartItemWithFood>[].obs;
   var quantity = 1.obs;
   var totalAmount = 0.0.obs;
+  var fee = 1.99.obs;
+  var isLoading = true.obs;
 
   @override
   void onInit() {
@@ -38,9 +40,11 @@ class CartController extends GetxController {
 
   Future<void> getCartItems() async {
     try {
+      isLoading(true);
       final userId = _authController.userId.value;
       if (userId.isEmpty) {
         Get.snackbar('Error', 'Please login to see your cart.');
+        isLoading(false);
         return;
       }
       final cartId = await _cartProvider.getCartIdByUserId(userId);
@@ -48,9 +52,12 @@ class CartController extends GetxController {
       // log('Cart items: ${items.map((e) => e.toJson()).toList()}');
       cartItems.value = items;
       await processCartItems();
+      update();
     } catch (e, stackTrace) {
       log('Error fetching cart items: $e', stackTrace: stackTrace);
       Get.snackbar('Error', 'Could not fetch cart items.');
+    } finally {
+      isLoading(false);
     }
   }
 
@@ -68,6 +75,7 @@ class CartController extends GetxController {
             total += food.price * item.quantity!;
           }
         }
+        update();
       } catch (e) {
         log('Error processing cart item ${item.id}: $e');
       }
@@ -87,8 +95,7 @@ class CartController extends GetxController {
       await _cartProvider.removeCartItem(cartId, cartItemId);
 
       cartItems.removeWhere((item) => item.id == cartItemId);
-      cartItemsWithFood
-          .removeWhere((item) => item.cartItem.id == cartItemId);
+      cartItemsWithFood.removeWhere((item) => item.cartItem.id == cartItemId);
       _recalculateTotal();
     } on DioException catch (e) {
       if (e.response?.statusCode == 404) {
@@ -106,5 +113,6 @@ class CartController extends GetxController {
       total += item.food.price * quantity;
     }
     totalAmount.value = total;
+    update();
   }
 }

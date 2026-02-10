@@ -25,6 +25,22 @@ class CartProvider {
     await _apiProvider.delete('${ApiEndpoint.carts}/$cartId/items/$cartItemId');
   }
 
+  Future<void> updateCartItemQuantity({
+    required int cartId,
+    required int cartItemId,
+    required int foodId,
+    required int quantity,
+  }) async {
+    await _apiProvider.put(
+      '${ApiEndpoint.carts}/$cartId/items/$cartItemId',
+      body: {
+        'cart_id': cartId,
+        'food_id': foodId,
+        'quantity': quantity,
+      },
+    );
+  }
+
   Future<int> getCartIdByUserId(String userId) async {
     final response = await _apiProvider.get(
       ApiEndpoint.carts,
